@@ -22,7 +22,7 @@ python.exe .\report.py
 > layers 0 -i 458 -e result.txt
 ```
 
-## Actions disponibles
+## Commandes disponibles
 
 ### `reports`
 
@@ -52,20 +52,21 @@ reports 1,2
 ### `layers`
 
 Permet de lister les layers d'un rapport et éventuellement les erreurs associées.
-La commande gnérale est:
+La commande générale est:
 
 ``` bash
-layers FILE [--csv CSV] [--search SEARCH] [--id ID] [--limit LIMIT] [--export EXPORT]
+layers FILE [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
 ```
 
 les paramètres sont:
 
-- `FILE`            : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
-- `--csv`/`-c`      : Exporte la liste des layers sous forme de fichier CSV - Optionnel
-- `--search`/`-s`   : Filtre de recherche plein texte permettant de limiter la liste des layers à afficher (ex.: `-s commune_actuelle`) - Optionnel
-- `--limit`/`-l`    : Limit du nombre de layers à retourner dans la liste - Optionnel
-- `--id`/`-i`       : Identifiant du layer à afficher - Optionnel
-- `--export`/`-e`   : Nom du fichier pour exporter le résultat de la requête - Optionnel
+- `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
+- `--csv`/`-c`         : Exporte la liste des layers sous forme de fichier CSV - Optionnel
+- `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des layers affichés (ex.: `-s commune_actuelle`) - Optionnel
+- `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des layers à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`) - Optionnel
+- `--limit`/`-l`       : Limit du nombre de layers à retourner dans la liste - Optionnel
+- `--id`/`-i`          : Identifiant du layer à afficher - Optionnel
+- `--export`/`-e`      : Nom du fichier pour exporter le résultat de la requête - Optionnel
 
 Exemple d'utilisation:
 
@@ -75,10 +76,36 @@ Exemple d'utilisation:
 > layers 0 -c wms_report.csv          # exporte la liste des layers sous la forme d'un fichier CSV nommé 'wms_report.csv'
 > layers 0 -s commune_actuelle        # affiche la liste des layers contenant le terme 'commune_actuelle'
 > layers 0 -s commune_actuelle -l 2   # affiche les 2 premiers layers contenant le terme 'commune_actuelle'
-> layers 0 -i 395                     # affiche le layer n°395 de la liste des > layers et le détail des erreurs associées
-> layers 0 -i 395 -e result.txt       # affiche le layer n°395 de la liste des > layers et le détail des erreurs associées puis l'exporte vers le fichier result.txt
+> layers 0 -w region-grand-est -l 5   # affiche les 5 premiers layers appartenant au workspace 'region-grand-est'
+> layers 0 -i 395                     # affiche le layer n°395 de la liste des layers et le détail des erreurs associées
+> layers 0 -i 395 -e result.txt       # affiche le layer n°395 de la liste des layers et le détail des erreurs associées puis l'exporte vers le fichier result.txt
 ```
 
+### `ws`
+
+Permet de lister les différents workspaces des layers d'un rapport.
+La commande générale est:
+
+``` bash
+ws FILE [--search SEARCH] [--limit LIMIT] [--export EXPORT]
+```
+
+les paramètres sont:
+
+- `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
+- `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des workspaces affichés (ex.: `-s region`) - Optionnel
+- `--limit`/`-l`       : Limit du nombre de workspaces à retourner dans la liste - Optionnel
+- `--export`/`-e`      : Nom du fichier pour exporter le résultat de la requête - Optionnel
+
+Exemple d'utilisation:
+
+``` bash
+> ws                             # affiche la liste des rapports disponibles
+> ws 0                           # affiche la liste des workspaces du rapport n°0
+> ws 0 -s ddt                    # affiche la liste des workspaces contenant le terme 'ddt'
+> layers 0 -s ddt -l 5           # affiche les 5 premiers workspaces contenant le terme 'ddt'
+> layers 0 -s ddt -e ws_ddt.txt  # affiche la liste des workspaces contenant le terme 'ddt'et l'exporte vers le fichier ws_ddt.txt
+```
 
 ## Exemple de résultats
 
