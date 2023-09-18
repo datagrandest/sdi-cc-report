@@ -7,7 +7,8 @@ from sdi_cc_report.app_cli import commands
 bindings = KeyBindings()
 
 @bindings.add('c-q')
-def _(event, app):
+@click.pass_obj
+def _(app, event):
     """Exit"""
     commands.on_exit(app)
 
@@ -73,7 +74,25 @@ def on_reports(app, files):
 @click.pass_obj
 def on_layers(app, file, csv, search, workspace, id, limit, export):
     """
-    > layers [FILE] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
+    > layers [FILE] [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
     Affiche la liste des layers du rapport [FILE]
     """
     commands.on_layers(app, file, csv, search, workspace, id, limit, export)
+
+
+@cli.command(name='ws')
+@click.argument('file', nargs=-1)
+@click.option('--search', '-s', default='', multiple=False, type=str, help='Search query to filter workspaces list')
+@click.option('--limit', '-l', default='10', type=str, help='Number of workspaces to return')
+@click.option('--export', '-e', default=None, type=str, help='Filename to export result')
+@click.pass_obj
+def on_workspaces(app, file, search, limit, export):
+    """
+    > layers [FILE] [--search SEARCH] [--limit LIMIT] [--export EXPORT]
+    Affiche la liste des layers du rapport [FILE]
+    """
+    commands.on_workspaces(app, file, search, limit, export)
+
+
+
+

@@ -1,6 +1,6 @@
 from tabulate import tabulate
 
-def print_reports_list(app, reports, files=None, title=None, print=False):
+def print_reports_list(app, reports, files=None, title=None, echo=False):
 
     nb_total_reports = len(reports)
     nb_display_reports = nb_total_reports
@@ -32,14 +32,14 @@ def print_reports_list(app, reports, files=None, title=None, print=False):
         result.append('Aucun fichier à afficher. Merci de vérifier les paramètres indiqués.')
     result.append('')
 
-    if print:
+    if echo:
         result_text = '\n'.join(result)
         app.echo(result_text)
     
     return result
     
 
-def print_report_table(app, report, data, title=None, print=False):
+def print_report_table(app, report, data, title=None, echo=False):
     #Get table data
     table = tabulate(data, tablefmt="pretty", colalign=('left', 'right'), maxcolwidths=[30, 8])
 
@@ -57,14 +57,14 @@ def print_report_table(app, report, data, title=None, print=False):
     result.append(table)
     result.append('')
 
-    if print:
+    if echo:
         result_text = '\n'.join(result)
         app.echo(result_text)
         
     return result
 
 
-def print_layers(app, report, data, limit=None, search=None, print=False):
+def print_layers(app, report, data, limit=None, search=None, echo=False):
     # Get headers, columns and data
     if report['type'].lower() in ['wms', 'wfs']:
         headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'ERRORS']
@@ -97,14 +97,14 @@ def print_layers(app, report, data, limit=None, search=None, print=False):
         result.append('No layer to display')
     result.append('')
 
-    if print:
+    if echo:
         result_text = '\n'.join(result)
         app.echo(result_text)
         
     return result
 
 
-def print_layer_errors(app, report, data, print=False):
+def print_layer_errors(app, report, data, echo=False):
     # Get headers, columns and data    
     headers = ['ID', 'CODE', 'MESSAGE']
     colalign = ('middle', 'left', 'left')
@@ -122,7 +122,45 @@ def print_layer_errors(app, report, data, print=False):
     result.append('')
 
     
-    if print:
+    if echo:
+        result_text = '\n'.join(result)
+        app.echo(result_text)
+        
+    return result
+
+
+def print_ws(app, report, data, limit=None, search=None, echo=False):
+    # Get headers, columns and data
+    headers = ['ID', 'WORKSPACE']
+    colalign = ('right', 'left')
+    data = [[k, d] for k,d in enumerate(data)]
+    data = data[0:int(limit)] if limit else data
+    
+    nb_total_ws = report['nb_total_ws']
+    nb_display_ws = len(data)
+    
+    # Display data table
+    result = []
+    result.append('')
+    result.append('Report name: {report_name}'.format(report_name=report['name']))
+    result.append('Report type: {report_type}'.format(report_type=report['type']))
+    result.append('Report URL: {report_url}'.format(report_url=report['url']))
+    result.append('')
+    result.append('Nb. workspaces: {nb_display_ws}/{nb_total_ws}'.format(nb_display_ws=nb_display_ws, nb_total_ws=nb_total_ws))
+    if search and search is not None:
+        result.append('Search parameter: {search}'.format(search=search))
+    if limit and limit is not None:
+        result.append('Limit parameter: {limit}'.format(limit=limit))
+    if len(data) > 0:
+        result.append('Workspaces:')
+        table = tabulate(data, headers, tablefmt="pretty", colalign=colalign)
+        result.append(table)
+    else:
+        result.append('')
+        result.append('No workspace to display')
+    result.append('')
+
+    if echo:
         result_text = '\n'.join(result)
         app.echo(result_text)
         
