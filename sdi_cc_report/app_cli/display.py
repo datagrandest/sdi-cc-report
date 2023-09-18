@@ -66,9 +66,14 @@ def print_report_table(app, report, data, title=None, print=False):
 
 def print_layers(app, report, data, limit=None, search=None, print=False):
     # Get headers, columns and data
-    headers = ['ID', 'NAME', 'STATUS', 'ERRORS']
-    colalign = ('right', 'left', 'left', 'left')
-    data = [[d['id'], d['name'], 'OK' if d['nb_errors'] == 0 else 'ERROR', d['nb_errors']] for d in data]
+    if report['type'].lower() in ['wms', 'wfs']:
+        headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'ERRORS']
+        colalign = ('right', 'left', 'left', 'left', 'left')
+        data = [[d['id'], d['workspace'], d['name'], 'OK' if d['nb_errors'] == 0 else 'ERROR', d['nb_errors']] for d in data]
+    else:
+        headers = ['ID', 'NAME', 'STATUS', 'ERRORS']
+        colalign = ('right', 'left', 'left', 'left')
+        data = [[d['id'], d['name'], 'OK' if d['nb_errors'] == 0 else 'ERROR', d['nb_errors']] for d in data]
 
     # Display data table
     result = []

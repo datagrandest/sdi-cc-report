@@ -99,6 +99,11 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
             for line in layers:
                 if line['id'] == id:
                     layer_name = line['layer']
+                    layer_ws = ''
+                    if report['type'].lower() in ['wms', 'wfs']:
+                        layer_ws = line['layer'].split(':')[0]
+                        layer_name = line['layer'].split(':')[1]
+                    
                     if line['error'] == 1:
                         layer_errors.append({
                             'error_id': error_id,
@@ -106,8 +111,10 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
                             'error_message': line['message']   
                         })
                         error_id += 1
+
             data = [{
                 'id': id,
+                'workspace': layer_ws,
                 'name': layer_name,
                 'nb_errors': len(layer_errors), 
                 'errors': layer_errors
@@ -121,9 +128,16 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
             data_id = []
             for line in layers:
                 if line['id'] not in data_id:
+                    layer_name = line['layer']
+                    layer_ws = ''
+                    if report['type'].lower() in ['wms', 'wfs']:
+                        layer_ws = line['layer'].split(':')[0]
+                        layer_name = line['layer'].split(':')[1]
+                    
                     data[line['id']] = {
                         'id': line['id'],
-                        'name': line['layer'],
+                        'workspace': layer_ws,
+                        'name': layer_name,
                         'nb_errors': 0, 
                         'errors': [],
                         'search': ' | '.join([line['id'], line['layer']])
@@ -141,7 +155,7 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
                 
             if workspace:
                 if report['type'].lower() in ['wms', 'wfs']:
-                    data = [d for d in data if workspace in d['name'].split(':')[0]]
+                    data = [d for d in data if workspace in d['workspace']]
                 else:
                     result.append('')
                     result.append('INFO: Check report type: --workspace parameter ignored.')
