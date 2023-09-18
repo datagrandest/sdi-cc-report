@@ -88,8 +88,8 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
 @click.pass_obj
 def on_workspaces(app, file, search, limit, export):
     """
-    > layers [FILE] [--search SEARCH] [--limit LIMIT] [--export EXPORT]
-    Affiche la liste des layers du rapport [FILE]
+    > ws [FILE] [--search SEARCH] [--limit LIMIT] [--export EXPORT]
+    Affiche la liste des workspaces du rapport [FILE]
     """
     commands.on_workspaces(app, file, search, limit, export)
 

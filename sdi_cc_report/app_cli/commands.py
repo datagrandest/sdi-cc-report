@@ -179,8 +179,8 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
 
 def on_workspaces(app, file, search, limit, export):
     """
-    > layers [FILE] [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
-    Affiche la liste des layers du rapport [FILE]
+    > ws [FILE] [--search SEARCH] [--limit LIMIT] [--export EXPORT]
+    Affiche la liste des workspaces du rapport [FILE]
     """
 
     if not file or file is None or len(file) == 0:
