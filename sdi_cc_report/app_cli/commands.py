@@ -70,9 +70,9 @@ def on_reports(app, files=None):
         result += display.print_reports_list(app, app.config['reports'], files, title="Liste des fichiers")
 
 
-def on_layers(app, file, csv, search, id, limit, export):
+def on_layers(app, file, csv, search, workspace, id, limit, export):
     """
-    > layers FILE [--csv CSV] [--search SEARCH] [--id ID] [--limit LIMIT] [--export EXPORT]
+    > layers [FILE] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
     Affiche la liste des layers du rapport [FILE]
     """
     result = ''
@@ -113,7 +113,7 @@ def on_layers(app, file, csv, search, id, limit, export):
             result += display.print_layers(app, report, data)
             result += display.print_layer_errors(app, report, layer_errors or [])
 
-        elif search or limit:
+        elif search or workspace or limit:
             data = {}
             data_id = []
             for line in layers:
@@ -135,6 +135,12 @@ def on_layers(app, file, csv, search, id, limit, export):
                 data = [data[d] for d in data if search in data[d]['search']]
             else:
                 data = [data[d] for d in data]
+                
+            if workspace:
+                if report['type'].lower() in ['wms', 'wfs']:
+                    data = [d for d in data if workspace in d['name'].split(':')[0]]
+                else:
+                    app.echo('Check report type: --workspace parameter ignored.')
 
             result += display.print_layers(app, report, data, limit, search)
 
@@ -148,4 +154,5 @@ def on_layers(app, file, csv, search, id, limit, export):
         if export:
             with open(export, 'w') as f:
                 f.write(result)
+                
 
