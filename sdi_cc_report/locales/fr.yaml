@@ -1,0 +1,4 @@
+lang: 'français'
+init_message: 'Initialisation de l''application SDI CC Report 2023 (version "{app}").'
+connexion_error_verify_login: 'Connexion error. Thanks to verify your login.'
+connexion_error_verify_login_password: 'Connection error. Check your login and password.'

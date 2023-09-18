@@ -1,0 +1,37 @@
+app:
+  name: 'SDI CC Report 2023'
+  title: 'SDI CC Report 2023'
+  # width: 500
+  # height: 800
+  # theme: 'breeze' # values: 'adapta', 'aquativo', 'arc', 'black', 'blue', 'breeze', 'clearlooks', 'elegance', 'equilux', 'itft1', 'keramik', 'kroc', 'plastik', 'radiance', 'scid themes', 'smog', 'winxpblue'
+  # device: 'desktop' # values: 'desktop', 'mobile'
+  # salt: 'master2023'
+  # salt_api: 'master'
+
+locales:
+    directory: './sdi_cc_report/locales/'
+    lang: 'fr'
+
+history:
+  file: './sdi_cc_report/data/.history'
+  clear_on_exit: False
+
+cli:
+  prompt: '>'
+
+log:
+  log_file: './sdi_cc_report/data/.log'
+
+reports:
+  - name: WMS DataGrandEst
+    type: wms
+    url: 'https://www.datagrandest.fr/public/wms-report.log'
+  - name: WFS DataGrandEst
+    type: wfs
+    url: 'https://www.datagrandest.fr/public/wfs-report.log'
+  - name: CSW DataGrandEst
+    type: csw
+    url: 'https://www.datagrandest.fr/public/csw-report.log'
+
+requests:
+  ssl_verify: False
