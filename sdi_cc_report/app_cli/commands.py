@@ -53,7 +53,7 @@ def on_reports(app, files=None):
     Display files report list
     > report reports [FILES]  
     """
-    result = ''
+    result = []
     files = [int(i.strip()) for i in ','.join(files).split(',')] if files and files is not None and len(files) > 0 else files
 
     if files and files is not None:
@@ -62,12 +62,15 @@ def on_reports(app, files=None):
                 report = app.config['reports'][file]
                 layers = app.get_report_data(report['url'])
                 report_summary = app.get_report_summary(layers, 'list')
-                result += display.print_report_table(app, report=report, data=report_summary)
+                result.extend(display.print_report_table(app, report=report, data=report_summary))
             else:
-                app.echo()
-                app.echo('ERROR: file indice {file} doesn''t exist'.format(file=file))
+                result.append('')
+                result.append('ERROR: file indice {file} doesn''t exist'.format(file=file))
     else:
-        result += display.print_reports_list(app, app.config['reports'], files, title="Liste des fichiers")
+        result.extend(display.print_reports_list(app, app.config['reports'], files, title="Liste des fichiers"))
+        
+    result_text = '\n'.join(result)
+    app.echo(result_text)
 
 
 def on_layers(app, file, csv, search, workspace, id, limit, export):
@@ -75,11 +78,11 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
     > layers [FILE] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
     Affiche la liste des layers du rapport [FILE]
     """
-    result = ''
+    result = []
 
     if not file or file is None or len(file) == 0:
-        app.echo('ERROR: [FILE] argument is missing.')
-        result += display.print_reports_list(app, app.config['reports'], title="Thanks to indicate a [FILE] id.")
+        result.append('ERROR: [FILE] argument is missing.')
+        result.extend(display.print_reports_list(app, app.config['reports'], title="Thanks to indicate a [FILE] id."))
 
     else: 
 
@@ -110,8 +113,8 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
                 'errors': layer_errors
             }]
 
-            result += display.print_layers(app, report, data)
-            result += display.print_layer_errors(app, report, layer_errors or [])
+            result.extend(display.print_layers(app, report, data))
+            result.extend(display.print_layer_errors(app, report, layer_errors or []))
 
         elif search or workspace or limit:
             data = {}
@@ -140,19 +143,23 @@ def on_layers(app, file, csv, search, workspace, id, limit, export):
                 if report['type'].lower() in ['wms', 'wfs']:
                     data = [d for d in data if workspace in d['name'].split(':')[0]]
                 else:
-                    app.echo('Check report type: --workspace parameter ignored.')
+                    result.append('')
+                    result.append('INFO: Check report type: --workspace parameter ignored.')
 
-            result += display.print_layers(app, report, data, limit, search)
+            result.extend(display.print_layers(app, report, data, limit, search))
 
         else:
             report_summary = app.get_report_summary(layers, 'list')
-            result += display.print_report_table(app, report=report, data=report_summary)
+            result.extend(display.print_report_table(app, report=report, data=report_summary))
 
         if csv:
             app.save_data_to_csv(csv, layers)
-
+            
         if export:
             with open(export, 'w') as f:
-                f.write(result)
+                result_text = '\n'.join(result)
+                f.write(result_text)
                 
+    result_text = '\n'.join(result)
+    app.echo(result_text)
 

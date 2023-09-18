@@ -1,6 +1,6 @@
 from tabulate import tabulate
 
-def print_reports_list(app, reports, files=None, title=None):
+def print_reports_list(app, reports, files=None, title=None, print=False):
 
     nb_total_reports = len(reports)
     nb_display_reports = nb_total_reports
@@ -32,13 +32,14 @@ def print_reports_list(app, reports, files=None, title=None):
         result.append('Aucun fichier à afficher. Merci de vérifier les paramètres indiqués.')
     result.append('')
 
-    result_text = '\n'.join(result)
-    app.echo(result_text)
-    return result_text
-
+    if print:
+        result_text = '\n'.join(result)
+        app.echo(result_text)
+    
+    return result
     
 
-def print_report_table(app, report, data, title=None):
+def print_report_table(app, report, data, title=None, print=False):
     #Get table data
     table = tabulate(data, tablefmt="pretty", colalign=('left', 'right'), maxcolwidths=[30, 8])
 
@@ -56,12 +57,14 @@ def print_report_table(app, report, data, title=None):
     result.append(table)
     result.append('')
 
-    result_text = '\n'.join(result)
-    app.echo(result_text)
-    return result_text
+    if print:
+        result_text = '\n'.join(result)
+        app.echo(result_text)
+        
+    return result
 
 
-def print_layers(app, report, data, limit=None, search=None):
+def print_layers(app, report, data, limit=None, search=None, print=False):
     # Get headers, columns and data
     headers = ['ID', 'NAME', 'STATUS', 'ERRORS']
     colalign = ('right', 'left', 'left', 'left')
@@ -89,12 +92,14 @@ def print_layers(app, report, data, limit=None, search=None):
         result.append('No layer to display')
     result.append('')
 
-    result_text = '\n'.join(result)
-    app.echo(result_text)
-    return result_text
+    if print:
+        result_text = '\n'.join(result)
+        app.echo(result_text)
+        
+    return result
 
 
-def print_layer_errors(app, report, data):
+def print_layer_errors(app, report, data, print=False):
     # Get headers, columns and data    
     headers = ['ID', 'CODE', 'MESSAGE']
     colalign = ('middle', 'left', 'left')
@@ -111,6 +116,9 @@ def print_layer_errors(app, report, data):
         result.append('No error to display')
     result.append('')
 
-    result_text = '\n'.join(result)
-    app.echo(result_text)
-    return result_text
+    
+    if print:
+        result_text = '\n'.join(result)
+        app.echo(result_text)
+        
+    return result
