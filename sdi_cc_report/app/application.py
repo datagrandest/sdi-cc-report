@@ -6,6 +6,7 @@ import requests
 
 from sdi_cc_report import config
 from sdi_cc_report.libs.yaml import Yaml
+from sdi_cc_report.libs.report import Report
 
 
 # TODO: à mettre dans une librairie partagée (helpers)
@@ -124,43 +125,46 @@ class Application():
         sys.exit()
    
     
-    def get_report_data(self, url):
-        requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
-        wms_report = requests.get(url, verify=self.config['requests']['ssl_verify'])
+    def get_layers(self, report=None, filter=None, workspace=None, name=None, id=None):
+        if report is None:
+            return False
         
-        layers = [layer for layer in wms_report.text.split('\n\n') if layer.startswith('#')]
+        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        data = r.get_layers()
+        
+        if filter and filter is not None:
+            data = r.get_layers(filter=filter)
+            
+        if workspace and workspace is not None:
+            data = r.get_layers(workspace=workspace)
+            
+        if name and name is not None:
+            data = r.get_layers(name=name)
+            
+        if id and id is not None:
+            data = r.get_layers(id=id)
+            
+        return {
+            'nb_layers': r.nb_layers,
+            'layers': data.layers
+        }
 
-        layers_dict = []
-        for layer in layers:
-            layer = layer.split('\n')
-            layer_dict = {
-                'id':    layer[0].lstrip()[1:],
-                'layer': layer[1].lstrip()[7:],
-                'error': 0,
-                'error_code': 'NONE',
-                'message': 'OK'
-            }
-
-            if len(layer) == 2:
-                layer_dict['layer'] = layer_dict['layer'][0:-3]
-                
-            if len(layer) == 3:
-                layer_dict['error'] = 1
-                layer_dict['message'] = layer[2].lstrip()[7:]
-                
-                if layer_dict['message'].lower().startswith('metadata'):
-                    layer_dict['error_code'] = 'ERROR_MD_LINK'
-                if layer_dict['message'].lower().startswith('no metadata'):
-                    layer_dict['error_code'] = 'ERROR_NO_MD'
-                if layer_dict['message'].lower().startswith('the requested style'):
-                    layer_dict['error_code'] = 'ERROR_STYLE'
-                if layer_dict['message'].lower().startswith('rendering process failed'):
-                    layer_dict['error_code'] = 'ERROR_RENDERING'
-
-            layers_dict.append(layer_dict)
-
-        return layers_dict
-
+ 
+    def get_workspaces(self, report=None, filter=None):
+        if report is None:
+            return False
+        
+        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        data = r.get_workspaces()
+        
+        if filter and filter is not None:
+            data = r.get_workspaces(filter=filter)
+            
+        return {
+            'nb_workspaces': r.nb_workspaces,
+            'workspaces': data.workspaces
+        }
+        
     
     def save_data_to_csv(self, file='data.csv', data=[{}]):
         keys = data[0].keys()
@@ -170,26 +174,16 @@ class Application():
             dict_writer.writerows(data)
 
     
-    def get_report_summary(self, data=[{}], type='dict'):
-        layers_id = set([l['id'] for l in data])
+    def get_report_summary(self, report=None):
+        if report is None:
+            return False
         
-        nb_layers = len(layers_id)
-        nb_layers_ok = len([layer for layer in data if layer['error'] == 0])
-        nb_layers_errors = nb_layers - nb_layers_ok
-        nb_total_errors = len([layer for layer in data if layer['error'] == 1])
-
-        if type == 'dict':
-            return {
-                'nb_layers': nb_layers,
-                'nb_layers_ok': nb_layers_ok,
-                'nb_layers_errors': nb_layers_errors,
-                'nb_total_errors': nb_total_errors
-            }
-
-        if type == 'list':
-            return [
-                ["nb_layers", nb_layers],
-                ["nb_layers_ok", nb_layers_ok], 
-                ["nb_layers_errors", nb_layers_errors], 
-                ["nb_total_errors", nb_total_errors]
-            ]
+        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        
+        return {
+            'nb_errors': r.nb_errors,
+            'nb_layers': r.nb_layers,
+            'nb_layers_ok': r.nb_layers_ok,
+            'nb_layers_errors': r.nb_layers_error,
+            'nb_workspaces': r.nb_workspaces,
+        }

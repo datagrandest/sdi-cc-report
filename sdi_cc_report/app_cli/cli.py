@@ -68,16 +68,17 @@ def on_reports(app, files):
 @click.option('--csv', '-c', default='', multiple=False, type=str, help='Filename to save data to CSV')
 @click.option('--search', '-s', default='', multiple=False, type=str, help='Search query to filter layers list')
 @click.option('--workspace', '-ws', default='', multiple=False, type=str, help='Filter layers list according workspace name (if report type is WMS or WFS)')
+@click.option('--name', '-n', default='', multiple=False, type=str, help='Filter layers list according name layer')
 @click.option('--id', '-i', default=None, multiple=False, help='Id of layers to display')
 @click.option('--limit', '-l', default='10', type=str, help='Number of layers to return')
 @click.option('--export', '-e', default=None, type=str, help='Filename to export result')
 @click.pass_obj
-def on_layers(app, file, csv, search, workspace, id, limit, export):
+def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     """
     > layers [FILE] [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
     Affiche la liste des layers du rapport [FILE]
     """
-    commands.on_layers(app, file, csv, search, workspace, id, limit, export)
+    commands.on_layers(app, file, csv, search, workspace, name, id, limit, export)
 
 
 @cli.command(name='ws')
