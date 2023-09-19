@@ -123,7 +123,32 @@ class Application():
     def on_exit_app(self):
         self.echo('Goodby!')
         sys.exit()
-   
+
+  
+    def get_errors(self, report=None, filter=None, workspace=None, name=None, id=None):
+        if report is None:
+            return False
+        
+        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        data = r.get_errors()
+        
+        if filter and filter is not None:
+            data = r.get_errors(filter=filter)
+            
+        if workspace and workspace is not None:
+            data = r.get_errors(workspace=workspace)
+            
+        if name and name is not None:
+            data = r.get_errors(name=name)
+            
+        if id and id is not None:
+            data = r.get_errors(id=id)
+            
+        return {
+            'nb_errors': r.nb_errors,
+            'errors': data.errors
+        }
+
     
     def get_layers(self, report=None, filter=None, workspace=None, name=None, id=None):
         if report is None:

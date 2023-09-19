@@ -65,6 +65,57 @@ def print_report_summary(app, report, data, title=None, echo=False):
     return result
 
 
+def print_errors(app, report, data, limit=None, search=None, workspace=None, name=None, id=None, echo=False):
+    # Get headers, columns and data
+    if report['type'].lower() in ['wms', 'wfs']:
+        headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'ERROR CODE', 'MESSAGE']
+        colalign = ('right', 'left', 'left', 'left', 'left', 'left')
+        maxcolwidths = [5, 20, 20, 8, 15, 60]
+        data['errors'] = [[d['id'], d['workspace'], d['name'], 'OK' if d['error'] == 0 else 'ERROR', d['error_code'], d['message']] for d in data['errors']]
+    else:
+        headers = ['ID', 'NAME', 'STATUS', 'ERROR CODE', 'MESSAGE']
+        colalign = ('right', 'left', 'left', 'left')
+        maxcolwidths = [5, 20, 8, 15, 60]
+        data['errors'] = [[d['id'], d['name'], 'OK' if d['error'] == 0 else 'ERROR', d['error_code'], d['message']] for d in data['errors']]
+        
+    nb_total_errors = data['nb_errors']
+    nb_display_errors = len(data['errors'])
+
+    # Display data table
+    result = []
+    result.append('')
+    result.append('Report name: {report_name}'.format(report_name=report['name']))
+    result.append('Report type: {report_type}'.format(report_type=report['type']))
+    result.append('Report URL: {report_url}'.format(report_url=report['url']))
+    result.append('')
+    result.append('Nb. errors: {nb_display_errors}/{nb_total_errors}'.format(nb_display_errors=nb_display_errors, nb_total_errors=nb_total_errors))
+    if search and search is not None:
+        result.append('Search parameter: {search}'.format(search=search))
+    if workspace and workspace is not None:
+        result.append('Workspace parameter: {workspace}'.format(workspace=workspace))
+    if name and name is not None:
+        result.append('Name parameter: {name}'.format(name=name))
+    if id and id is not None:
+        result.append('Id parameter: {id}'.format(id=id))
+    if limit and limit is not None:
+        data['errors'] = data['errors'][0:int(limit)]
+        result.append('Limit parameter: {limit}'.format(limit=limit))
+    if nb_display_errors > 0:
+        result.append('Errors:')
+        table = tabulate(data['errors'], headers, tablefmt="grid", colalign=colalign, maxcolwidths=maxcolwidths)
+        result.append(table)
+    else:
+        result.append('')
+        result.append('No layer to display')
+    result.append('')
+
+    if echo:
+        result_text = '\n'.join(result)
+        app.echo(result_text)
+        
+    return result
+
+
 def print_layers(app, report, data, limit=None, search=None, echo=False):
     # Get headers, columns and data
     if report['type'].lower() in ['wms', 'wfs']:

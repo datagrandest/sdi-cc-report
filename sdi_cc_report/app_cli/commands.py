@@ -72,6 +72,36 @@ def on_reports(app, files=None):
     app.echo(result_text)
 
 
+def on_errors(app, file, csv, search, workspace, name, id, limit, export):
+    """
+    > errors [FILE] [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
+    Affiche la liste des erreurs du rapport [FILE]
+    """
+    if not file or file is None or len(file) == 0:
+        app.echo('')
+        app.echo('ERROR: [FILE] argument is missing.')
+        display.print_reports_list(app, app.config['reports'], title="Thanks to indicate a [FILE] id.", echo=True)
+        sys.exit()
+
+    result = []
+    file = [int(i.strip()) for i in ','.join(file).split(',')][0]
+    report = app.config['reports'][file]
+
+    data = app.get_errors(report=report, filter=search, workspace=workspace, name=name, id=id)
+    result.extend(display.print_errors(app, report, data, limit, search, workspace, name, id))
+
+    if csv:
+        app.save_data_to_csv(csv, data)
+        
+    if export:
+        with open(export, 'w') as f:
+            result_text = '\n'.join(result)
+            f.write(result_text)
+                
+    result_text = '\n'.join(result)
+    app.echo(result_text)
+
+
 def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     """
     > layers [FILE] [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
