@@ -109,9 +109,9 @@ def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     app.echo(result_text)
 
 
-def on_workspaces(app, file, search, limit, export):
+def on_workspaces(app, file, csv, search, limit, export):
     """
-    > ws [FILE] [--search SEARCH] [--limit LIMIT] [--export EXPORT]
+    > ws [FILE] [--csv CSV] [--search SEARCH] [--limit LIMIT] [--export EXPORT]
     Affiche la liste des workspaces du rapport [FILE]
     """
 
@@ -133,6 +133,9 @@ def on_workspaces(app, file, search, limit, export):
     result = []
     data = app.get_workspaces(report=report, filter=search)
     result.extend(display.print_workspaces(app, report, data, limit, search))
+    
+    if csv:
+        app.save_data_to_csv(csv, data)
 
     if export:
         with open(export, 'w') as f:
