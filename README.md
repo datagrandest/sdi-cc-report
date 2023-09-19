@@ -49,6 +49,38 @@ reports 1 2
 reports 1,2
 ```
 
+### `errors`
+
+Permet de lister les erreurs d'un rapport.
+La commande générale est:
+
+``` bash
+errors FILE [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
+```
+
+les paramètres sont:
+
+- `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
+- `--csv`/`-c`         : Exporte la liste des erreurs sous forme de fichier CSV - Optionnel
+- `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des erreurs affichées (ex.: `-s commune_actuelle`) - Optionnel
+- `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des erreurs à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`) - Optionnel
+- `--limit`/`-l`       : Limit du nombre d'erreurs à retourner dans la liste - Optionnel
+- `--id`/`-i`          : Identifiant de l'erreur à afficher - Optionnel
+- `--export`/`-e`      : Nom du fichier pour exporter le résultat de la requête - Optionnel
+
+Exemple d'utilisation:
+
+``` bash
+> errors                              # affiche la liste des rapports disponibles
+> errors 0                            # affiche la liste des erreurs du rapport n°0
+> errors 0 -c wms_report.csv          # exporte la liste des erreurs sous la forme d'un fichier CSV nommé 'wms_report.csv'
+> errors 0 -s commune_actuelle        # affiche la liste des erreurs contenant le terme 'commune_actuelle'
+> errors 0 -s commune_actuelle -l 2   # affiche les 2 premières erreurs contenant le terme 'commune_actuelle'
+> errors 0 -w region-grand-est -l 5   # affiche les 5 premières erreurs appartenant au workspace 'region-grand-est'
+> errors 0 -i 395                     # affiche l'erreur n°395
+> errors 0 -i 395 -e result.txt       # affiche l'erreur n°395 puis l'exporte vers le fichier result.txt
+```
+
 ### `layers`
 
 Permet de lister les layers d'un rapport et éventuellement les erreurs associées.
@@ -72,7 +104,7 @@ Exemple d'utilisation:
 
 ``` bash
 > layers                              # affiche la liste des rapports disponibles
-> layers 0                            # affiche la synthèse du rapport n°0 de la liste
+> layers 0                            # affiche la liste des layers du rapport n°0
 > layers 0 -c wms_report.csv          # exporte la liste des layers sous la forme d'un fichier CSV nommé 'wms_report.csv'
 > layers 0 -s commune_actuelle        # affiche la liste des layers contenant le terme 'commune_actuelle'
 > layers 0 -s commune_actuelle -l 2   # affiche les 2 premiers layers contenant le terme 'commune_actuelle'
@@ -137,6 +169,28 @@ Summary:
 | nb_layers_errors | 1842 |
 | nb_total_errors  | 1941 |
 +------------------+------+
+```
+
+``` bash
+python.exe .\report.py errors 0 -i 2
+
+Report name: WMS DataGrandEst
+Report type: wms
+Report URL: https://www.datagrandest.fr/public/wms-report.log
+
+Nb. errors: 1/2016
+Id parameter: 2
+Limit parameter: 10
+Errors:
++------+-------------+----------------------+----------+---------------+--------------------------------------------------------------+
+|   ID | WORKSPACE   | NAME                 | STATUS   | ERROR CODE    | MESSAGE                                                      |
++======+=============+======================+==========+===============+==============================================================+
+|    2 | geograndest | CIGAL_BD_OCS_V2_2000 | ERROR    | ERROR_MD_LINK | Metadata https://www.datagrandest.fr/geonetwork/srv/fre/cata |
+|      |             | _ALSACE              |          |               | log.search#/metadata/FR-236700019-BdOCS2000-CIGAL-V2 not     |
+|      |             |                      |          |               | found or invalid for layer                                   |
+|      |             |                      |          |               | 'geograndest:CIGAL_BD_OCS_V2_2000_ALSACE': Unable to parse   |
+|      |             |                      |          |               | the text/xml metadata: mismatched tag: line 22, column 5     |
++------+-------------+----------------------+----------+---------------+--------------------------------------------------------------+
 ```
 
 ``` bash
