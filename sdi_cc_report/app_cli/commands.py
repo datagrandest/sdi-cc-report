@@ -48,7 +48,7 @@ def on_clear_history(app):
         os.remove(app.config['history']['file'])
 
 
-def on_reports(app, files=None):
+def on_reports(app, files, csv, export):
     """
     Display files report list
     > report reports [FILES]  
@@ -60,14 +60,22 @@ def on_reports(app, files=None):
     if files and files is not None:
         for file in files:
             if file < len(reports):
-                report_summary = app.get_report_summary(report=reports[file])
-                result.extend(display.print_report_summary(app, report=reports[file], data=report_summary))
+                data = app.get_report_summary(report=reports[file])
+                result.extend(display.print_report_summary(app, report=reports[file], data=data))
             else:
                 result.append('')
                 result.append('ERROR: file indice {file} doesn''t exist'.format(file=file))
     else:
         result.extend(display.print_reports_list(app, reports, files, title="Liste des fichiers"))
+   
+    if csv:
+        app.save_data_to_csv(csv, [data])
         
+    if export:
+        with open(export, 'w') as f:
+            result_text = '\n'.join(result)
+            f.write(result_text)
+    
     result_text = '\n'.join(result)
     app.echo(result_text)
 

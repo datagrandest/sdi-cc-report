@@ -33,20 +33,27 @@ reports
 ```
 
 Il est possible de limiter la liste à certains rapports en précisant un ou plusieurs identifiants.  
-Dans ce cas, pour chaque rapport sont indiqués: le nombre de layers dans le rapport, le nombre de layers OK et en erreur et le nombre total d'erreurs.
+Dans ce cas, pour chaque rapport sont indiqués: le nombre de layers dans le rapport, le nombre de layers OK et en erreur, le nombre total d'erreurs et le nombre de workspaces.
+
+La commande générale est:
 
 ``` bash
-reports FILES
+reports FILES [--csv CVS] [--export EXPORT]
 ```
 
-Où `FILES` correspond à l'identifiant du ou des rapports à lister.
+Les paramètres sont:
 
-Exemples:
+- `FILE`               : Identifiant du rapport sélectionné - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
+- `--csv`/`-c`         : Exporte le résultat de la requête sous forme de fichier CSV - Optionnel
+- `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
+
+Exemple d'utilisation:
 
 ``` bash
-reports 0
-reports 1 2
-reports 1,2
+> reports                       # affiche la liste des rapports disponibles
+> reports 0                     # affiche les statistiques du rapport n°0 (nombre de layers, nombre de layers en erreur et OK, nombre total d'erreurs, nombre de workspaces).
+> reports 0 -c wms_report.csv   # exporte les statistiques du rapport n°0 sous la forme d'un fichier CSV nommé 'wms_report.csv'
+> reports 0 -e result.txt       # affiche les statistiques du rapport n°0 puis l'exporte vers le fichier 'result.txt'
 ```
 
 ### `errors`
@@ -58,15 +65,15 @@ La commande générale est:
 errors FILE [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
 ```
 
-les paramètres sont:
+Les paramètres sont:
 
 - `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
 - `--csv`/`-c`         : Exporte la liste des erreurs sous forme de fichier CSV - Optionnel
 - `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des erreurs affichées (ex.: `-s commune_actuelle`) - Optionnel
 - `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des erreurs à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`) - Optionnel
-- `--limit`/`-l`       : Limit du nombre d'erreurs à retourner dans la liste - Optionnel
+- `--limit`/`-l`       : Limite du nombre d'erreurs à retourner dans la liste - Optionnel
 - `--id`/`-i`          : Identifiant de l'erreur à afficher - Optionnel
-- `--export`/`-e`      : Nom du fichier pour exporter le résultat de la requête - Optionnel
+- `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
 
 Exemple d'utilisation:
 
@@ -78,7 +85,7 @@ Exemple d'utilisation:
 > errors 0 -s commune_actuelle -l 2   # affiche les 2 premières erreurs contenant le terme 'commune_actuelle'
 > errors 0 -w region-grand-est -l 5   # affiche les 5 premières erreurs appartenant au workspace 'region-grand-est'
 > errors 0 -i 395                     # affiche l'erreur n°395
-> errors 0 -i 395 -e result.txt       # affiche l'erreur n°395 puis l'exporte vers le fichier result.txt
+> errors 0 -i 395 -e result.txt       # affiche l'erreur n°395 puis l'exporte vers le fichier 'result.txt'
 ```
 
 ### `layers`
@@ -90,15 +97,15 @@ La commande générale est:
 layers FILE [--csv CSV] [--search SEARCH] [--workspace WS] [--id ID] [--limit LIMIT] [--export EXPORT]
 ```
 
-les paramètres sont:
+Les paramètres sont:
 
 - `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
 - `--csv`/`-c`         : Exporte la liste des layers sous forme de fichier CSV - Optionnel
 - `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des layers affichés (ex.: `-s commune_actuelle`) - Optionnel
 - `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des layers à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`) - Optionnel
-- `--limit`/`-l`       : Limit du nombre de layers à retourner dans la liste - Optionnel
+- `--limit`/`-l`       : Limite du nombre de layers à retourner dans la liste - Optionnel
 - `--id`/`-i`          : Identifiant du layer à afficher - Optionnel
-- `--export`/`-e`      : Nom du fichier pour exporter le résultat de la requête - Optionnel
+- `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
 
 Exemple d'utilisation:
 
@@ -110,7 +117,7 @@ Exemple d'utilisation:
 > layers 0 -s commune_actuelle -l 2   # affiche les 2 premiers layers contenant le terme 'commune_actuelle'
 > layers 0 -w region-grand-est -l 5   # affiche les 5 premiers layers appartenant au workspace 'region-grand-est'
 > layers 0 -i 395                     # affiche le layer n°395 de la liste des layers et le détail des erreurs associées
-> layers 0 -i 395 -e result.txt       # affiche le layer n°395 de la liste des layers et le détail des erreurs associées puis l'exporte vers le fichier result.txt
+> layers 0 -i 395 -e result.txt       # affiche le layer n°395 de la liste des layers et le détail des erreurs associées puis l'exporte vers le fichier 'result.txt'
 ```
 
 ### `ws`
@@ -122,12 +129,12 @@ La commande générale est:
 ws FILE [--search SEARCH] [--limit LIMIT] [--export EXPORT]
 ```
 
-les paramètres sont:
+Les paramètres sont:
 
 - `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
 - `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des workspaces affichés (ex.: `-s region`) - Optionnel
-- `--limit`/`-l`       : Limit du nombre de workspaces à retourner dans la liste - Optionnel
-- `--export`/`-e`      : Nom du fichier pour exporter le résultat de la requête - Optionnel
+- `--limit`/`-l`       : Limite du nombre de workspaces à retourner dans la liste - Optionnel
+- `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
 
 Exemple d'utilisation:
 
@@ -136,7 +143,7 @@ Exemple d'utilisation:
 > ws 0                           # affiche la liste des workspaces du rapport n°0
 > ws 0 -s ddt                    # affiche la liste des workspaces contenant le terme 'ddt'
 > layers 0 -s ddt -l 5           # affiche les 5 premiers workspaces contenant le terme 'ddt'
-> layers 0 -s ddt -e ws_ddt.txt  # affiche la liste des workspaces contenant le terme 'ddt'et l'exporte vers le fichier ws_ddt.txt
+> layers 0 -s ddt -e ws_ddt.txt  # affiche la liste des workspaces contenant le terme 'ddt' et l'exporte vers le fichier 'ws_ddt.txt'
 ```
 
 ## Exemple de résultats

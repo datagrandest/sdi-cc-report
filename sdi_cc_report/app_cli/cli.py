@@ -53,14 +53,16 @@ def on_test(app):
 
 @cli.command(name='reports')
 @click.argument('files', nargs=-1, default=None)
+@click.option('--csv', '-c', default='', multiple=False, type=str, help='Filename to save data to CSV')
+@click.option('--export', '-e', default=None, type=str, help='Filename to export result')
 @click.pass_obj
-def on_reports(app, files):
+def on_reports(app, files, csv, export):
     """
-    > reports [FILES]
+    > reports [FILES] [--csv CVS] [--export EXPORT]
 
     Affiche la liste des fichiers disponibles ou les informations du ou des fichiers indiqués par FILES
     """
-    commands.on_reports(app, files)
+    commands.on_reports(app, files, csv, export)
 
 
 @cli.command(name='errors')
