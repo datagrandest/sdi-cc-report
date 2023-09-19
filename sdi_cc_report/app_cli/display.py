@@ -116,7 +116,7 @@ def print_errors(app, report, data, limit=None, search=None, workspace=None, nam
     return result
 
 
-def print_layers(app, report, data, limit=None, search=None, echo=False):
+def print_layers(app, report, data, limit=None, search=None, workspace=None, name=None, id=None, echo=False):
     # Get headers, columns and data
     if report['type'].lower() in ['wms', 'wfs']:
         headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'ERRORS']
@@ -140,6 +140,12 @@ def print_layers(app, report, data, limit=None, search=None, echo=False):
     result.append('Nb. layers: {nb_display_layers}/{nb_total_layers}'.format(nb_display_layers=nb_display_layers, nb_total_layers=nb_total_layers))
     if search and search is not None:
         result.append('Search parameter: {search}'.format(search=search))
+    if workspace and workspace is not None:
+        result.append('Workspace parameter: {workspace}'.format(workspace=workspace))
+    if name and name is not None:
+        result.append('Name parameter: {name}'.format(name=name))
+    if id and id is not None:
+        result.append('Id parameter: {id}'.format(id=id))
     if limit and limit is not None:
         data['layers'] = data['layers'][0:int(limit)]
         result.append('Limit parameter: {limit}'.format(limit=limit))
