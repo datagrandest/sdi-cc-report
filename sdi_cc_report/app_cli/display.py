@@ -69,12 +69,12 @@ def print_errors(app, report, data, limit=None, search=None, workspace=None, nam
     # Get headers, columns and data
     if report['type'].lower() in ['wms', 'wfs']:
         headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'ERROR CODE', 'MESSAGE']
-        colalign = ('right', 'left', 'left', 'left', 'left', 'left')
+        colalign = ('right', 'left', 'left', 'center', 'left', 'left')
         maxcolwidths = [5, 20, 20, 8, 15, 60]
         data['errors'] = [[d['id'], d['workspace'], d['name'], 'OK' if d['error'] == 0 else 'ERROR', d['error_code'], d['message']] for d in data['errors']]
     else:
         headers = ['ID', 'NAME', 'STATUS', 'ERROR CODE', 'MESSAGE']
-        colalign = ('right', 'left', 'left', 'left')
+        colalign = ('right', 'left', 'center', 'left', 'left')
         maxcolwidths = [5, 20, 8, 15, 60]
         data['errors'] = [[d['id'], d['name'], 'OK' if d['error'] == 0 else 'ERROR', d['error_code'], d['message']] for d in data['errors']]
         
@@ -119,12 +119,12 @@ def print_errors(app, report, data, limit=None, search=None, workspace=None, nam
 def print_layers(app, report, data, limit=None, search=None, workspace=None, name=None, id=None, echo=False):
     # Get headers, columns and data
     if report['type'].lower() in ['wms', 'wfs']:
-        headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'ERRORS']
-        colalign = ('right', 'left', 'left', 'left', 'left')
+        headers = ['ID', 'WORKSPACE', 'NAME', 'STATUS', 'NB ERRORS']
+        colalign = ('right', 'left', 'left', 'center', 'right')
         data['layers'] = [[d['id'], d['workspace'], d['name'], 'OK' if d['nb_errors'] == 0 else 'ERROR', d['nb_errors']] for d in data['layers']]
     else:
-        headers = ['ID', 'NAME', 'STATUS', 'ERRORS']
-        colalign = ('right', 'left', 'left', 'left')
+        headers = ['ID', 'NAME', 'STATUS', 'NB ERRORS']
+        colalign = ('right', 'left', 'center', 'right')
         data['layers'] = [[d['id'], d['name'], 'OK' if d['nb_errors'] == 0 else 'ERROR', d['nb_errors']] for d in data['layers']]
         
     nb_total_layers = data['nb_layers']
@@ -168,7 +168,7 @@ def print_layers(app, report, data, limit=None, search=None, workspace=None, nam
 def print_layer_errors(app, report, data, echo=False):
     # Get headers, columns and data    
     headers = ['ID', 'CODE', 'MESSAGE']
-    colalign = ('middle', 'left', 'left')
+    colalign = ('right', 'left', 'left')
     maxcolwidths = [5, 20, 80]
     data = [[d['error_id'], d['error_code'], d['error_message']] for d in data]
 
@@ -191,11 +191,11 @@ def print_layer_errors(app, report, data, echo=False):
 
 def print_workspaces(app, report, data, limit=None, search=None, echo=False):
     # Get headers, columns and data
-    headers = ['ID', 'WORKSPACE']
-    colalign = ('right', 'left')
-    data['workspaces'] = [[k, d] for k,d in enumerate(data['workspaces'])]
-    data['workspaces'] = data['workspaces'][0:int(limit)] if limit else data['workspaces']
-    
+    headers = ['ID', 'WORKSPACE', 'STATUS', 'NB ERRORS', 'NB LAYERS', 'NB LAYERS OK', 'NB LAYERS ERROR']
+    colalign = ('right', 'left', 'center', 'right', 'right', 'right', 'right')
+    # data['workspaces'] = [[k, d] for k, d in enumerate(data['workspaces'])]
+    data['workspaces'] = [[d['id'], d['workspace'], 'OK' if d['nb_errors'] == 0 else 'ERROR', d['nb_errors'], d['nb_layers'], d['nb_layers_ok'], d['nb_layers_error'], ] for d in data['workspaces']]
+        
     nb_total_ws = data['nb_workspaces']
     nb_display_ws = len(data['workspaces'])
     
@@ -210,6 +210,7 @@ def print_workspaces(app, report, data, limit=None, search=None, echo=False):
     if search and search is not None:
         result.append('Search parameter: {search}'.format(search=search))
     if limit and limit is not None:
+        data['workspaces'] = data['workspaces'][0:int(limit)]
         result.append('Limit parameter: {limit}'.format(limit=limit))
     if nb_display_ws > 0:
         result.append('Workspaces:')

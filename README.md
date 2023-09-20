@@ -303,6 +303,28 @@ Errors:
 +------+---------------+----------------------------------------------------------------------------------+
 ```
 
+``` bash
+python.exe .\report.py ws 0 -s *grand*
+
+Report name: WMS DataGrandEst
+Report type: wms
+Report URL: https://www.datagrandest.fr/public/wms-report.log
+
+Nb. workspaces: 5/60
+Search parameter: *grand*
+Limit parameter: 10
+Workspaces:
++----+------------------+--------+-----------+-----------+--------------+-----------------+
+| ID | WORKSPACE        | STATUS | NB ERRORS | NB LAYERS | NB LAYERS OK | NB LAYERS ERROR |
++----+------------------+--------+-----------+-----------+--------------+-----------------+
+|  0 | geograndest      | ERROR  |       316 |       267 |           15 |             252 |
+|  3 | region-grand-est | ERROR  |       127 |       123 |            2 |             121 |
+| 25 | grand-nancy      | ERROR  |         6 |         8 |            2 |               6 |
+| 45 | geograndest-loc  | ERROR  |         5 |         5 |            0 |               5 |
+| 48 | geograndest-edit | ERROR  |         9 |         9 |            0 |               9 |
++----+------------------+--------+-----------+-----------+--------------+-----------------+
+```
+
 ## Déploiement de l'application
 
 Après avoir cloné le dépôt, il est conseillé d'utiliser un environnement virtuel Python.

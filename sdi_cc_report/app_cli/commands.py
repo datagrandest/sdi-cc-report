@@ -96,7 +96,7 @@ def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     report = app.config['reports'][file]
 
     data = app.get_errors(report=report, filter=search, workspace=workspace, name=name, id=id)
-    result.extend(display.print_errors(app, report, data, limit, search, workspace, name, id))
+    result.extend(display.print_errors(app, report, data, limit, search=search, workspace=workspace, name=name, id=id))
 
     if csv:
         app.save_data_to_csv(csv, data)
@@ -128,12 +128,12 @@ def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     if id:
         data = app.get_layers(report=report, id=id)
         data_errors = data['layers'][0]['errors']
-        result.extend(display.print_layers(app, report, data))
+        result.extend(display.print_layers(app, report, data, id=id))
         result.extend(display.print_layer_errors(app, report, data_errors or []))
 
     else:
         data = app.get_layers(report=report, filter=search, workspace=workspace, name=name)
-        result.extend(display.print_layers(app, report, data, limit, search))
+        result.extend(display.print_layers(app, report, data, limit, search=search, workspace=workspace, name=name))
 
     if csv:
         app.save_data_to_csv(csv, data)

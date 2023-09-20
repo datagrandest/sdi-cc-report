@@ -156,7 +156,7 @@ class Report(object):
                 e_ws = e_name.split(':')[0]
                 e_name = e_name.split(':')[1]
             
-            error_dict = {
+            error = {
                 'id': e_id ,
                 'workspace': e_ws,
                 'name': e_name,
@@ -167,21 +167,21 @@ class Report(object):
             }
                 
             if len(error_lines) == 3:
-                error_dict['error'] = 1
-                error_dict['message'] = error_lines[2].lstrip()[7:]
+                error['error'] = 1
+                error['message'] = error_lines[2].lstrip()[7:]
                 
-                if error_dict['message'].lower().startswith('metadata'):
-                    error_dict['error_code'] = 'ERROR_MD_LINK'
-                if error_dict['message'].lower().startswith('no metadata'):
-                    error_dict['error_code'] = 'ERROR_NO_MD'
-                if error_dict['message'].lower().startswith('the requested style'):
-                    error_dict['error_code'] = 'ERROR_STYLE'
-                if error_dict['message'].lower().startswith('rendering process failed'):
-                    error_dict['error_code'] = 'ERROR_RENDERING'
+                if error['message'].lower().startswith('metadata'):
+                    error['error_code'] = 'ERROR_MD_LINK'
+                if error['message'].lower().startswith('no metadata'):
+                    error['error_code'] = 'ERROR_NO_MD'
+                if error['message'].lower().startswith('the requested style'):
+                    error['error_code'] = 'ERROR_STYLE'
+                if error['message'].lower().startswith('rendering process failed'):
+                    error['error_code'] = 'ERROR_RENDERING'
                     
-            error_dict['search'] = ' | '.join([error_dict['id'], error_dict['workspace'], error_dict['name'], error_dict['error_code'], error_dict['message']])
+            error['search'] = ' | '.join([error['id'], error['workspace'], error['name'], error['error_code'], error['message']])
 
-            errors.append(error_dict)
+            errors.append(error)
             
         if filter and filter is not None:
             errors = [error for error in errors if filter in error['search']]
@@ -245,13 +245,35 @@ class Report(object):
             layers = [layer for layer in layers if layer['id'] == id]
         
         return layers
-    
-    
-    def _get_workspaces(self, filter=None):
-        # TODO: add nb_errors, nb_layers, nb_layers_ok, nb_layers_error for each workspace
-        if filter and filter is not None:
-            return list(set([layer['workspace'] for layer in self.layers if self.is_filter(layer['workspace'], filter)]))
-        return list(set([layer['workspace'] for layer in self.layers]))
+
+
+    def _get_workspaces(self, workspace=None):
+        workspaces = {}
+        for layer in self.layers:
+            if layer['workspace'] not in workspaces.keys():
+                workspaces[layer['workspace']] = {
+                    'id': len(workspaces.keys()),
+                    'workspace': layer['workspace'],
+                    'nb_errors': 0,
+                    'nb_layers': 0,
+                    'nb_layers_ok': 0,
+                    'nb_layers_error': 0,
+                }
+
+            if layer['error'] == 1:
+                workspaces[layer['workspace']]['nb_errors'] += layer['nb_errors']
+                workspaces[layer['workspace']]['nb_layers_error'] += 1
+            else:
+                workspaces[layer['workspace']]['nb_layers_ok'] += 1
+                
+            workspaces[layer['workspace']]['nb_layers'] += 1
+
+        workspaces = [workspaces[ws] for ws in workspaces]
+        
+        if workspace and workspace is not None:
+            workspaces = [ws for ws in workspaces if self.is_filter(ws['workspace'], workspace)]
+        
+        return workspaces
 
 
     def _get_nb_layers(self):
@@ -302,7 +324,7 @@ class Report(object):
     def get_workspaces(self, filter=None):
         self.errors = self._get_errors()
         self.layers = self._get_layers()
-        self.workspaces = self._get_workspaces(filter=filter)
+        self.workspaces = self._get_workspaces(workspace=filter)
         return self
 
 
