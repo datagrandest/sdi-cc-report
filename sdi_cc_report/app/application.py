@@ -184,6 +184,6 @@ class Application():
             'nb_errors': r.nb_errors,
             'nb_layers': r.nb_layers,
             'nb_layers_ok': r.nb_layers_ok,
-            'nb_layers_errors': r.nb_layers_error,
+            'nb_layers_error': r.nb_layers_error,
             'nb_workspaces': r.nb_workspaces,
         }
