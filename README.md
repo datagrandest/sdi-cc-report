@@ -70,7 +70,8 @@ Les paramètres sont:
 - `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
 - `--csv`/`-c`         : Exporte la liste des erreurs sous forme de fichier CSV - Optionnel
 - `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des erreurs affichées (ex.: `-s commune_actuelle`) - Optionnel
-- `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des erreurs à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`) - Optionnel
+- `--workspace`/`-w`   : Filtre permettant de limiter la liste des erreurs à afficher en fonction du workspace pour les rapports de type WMS et WFS (ex.: `-w geograndest`). Il est possible d'utiliser le wildcard '*' - Optionnel
+- `--name`/`-n`        : Filtre permettant de limiter la liste des erreurs à afficher en fonction du nom du layer (ex.: `-n test`). Il est possible d'utiliser le wildcard '*' - Optionnel
 - `--limit`/`-l`       : Limite du nombre d'erreurs à retourner dans la liste - Optionnel
 - `--id`/`-i`          : Identifiant de l'erreur à afficher - Optionnel
 - `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
@@ -102,7 +103,8 @@ Les paramètres sont:
 - `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
 - `--csv`/`-c`         : Exporte la liste des layers sous forme de fichier CSV - Optionnel
 - `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des layers affichés (ex.: `-s commune_actuelle`) - Optionnel
-- `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des layers à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`) - Optionnel
+- `--workspace`/`-w`   : Filtre de recherche permettant de limiter la liste des layers à afficher en fonction du workspace pour les rapport de type WMS et WFS (ex.: `-w geograndest`). Il est possible d'utiliser le wildcard '*' - Optionnel
+- `--name`/`-n`        : Filtre permettant de limiter la liste des erreurs à afficher en fonction du nom du layer (ex.: `-n test`). Il est possible d'utiliser le wildcard '*' - Optionnel
 - `--limit`/`-l`       : Limite du nombre de layers à retourner dans la liste - Optionnel
 - `--id`/`-i`          : Identifiant du layer à afficher - Optionnel
 - `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
@@ -131,8 +133,8 @@ ws FILE [--search SEARCH] [--limit LIMIT] [--export EXPORT]
 
 Les paramètres sont:
 
-- `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
-- `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des workspaces affichés (ex.: `-s region`) - Optionnel
+- `FILE`               : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée) - Obligatoire
+- `--search`/`-s`      : Filtre de recherche plein texte permettant de limiter la liste des workspaces affichés (ex.: `-s region`). Il est possible d'utiliser le wildcard '*'. - Optionnel
 - `--limit`/`-l`       : Limite du nombre de workspaces à retourner dans la liste - Optionnel
 - `--export`/`-e`      : Exporte le résultat de la requête au format TXT - Optionnel
 
