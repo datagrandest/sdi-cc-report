@@ -167,16 +167,16 @@ class Report(object):
 
             errors.append(error_dict)
             
-        if filter is not None:
+        if filter and filter is not None:
             errors = [error for error in errors if filter in error['search']]
             
-        if workspace is not None:
+        if workspace and workspace is not None:
             errors = [error for error in errors if workspace in error['workspace']]
             
-        if name is not None:
+        if name and name is not None:
             errors = [error for error in errors if name in error['name']]
             
-        if id is not None:
+        if id and id is not None:
             errors = [error for error in errors if error['id'] == id]
 
         return errors
@@ -216,23 +216,23 @@ class Report(object):
 
         layers = [layers[l] for l in layers]
 
-        if filter is not None:
+        if filter and filter is not None:
             layers = [layer for layer in layers if filter in layer['search']]
             
-        if workspace is not None:
+        if workspace and workspace is not None:
             layers = [layer for layer in layers if workspace in layer['workspace']]
             
-        if name is not None:
+        if name and name is not None:
             layers = [layer for layer in layers if name in layer['name']]
             
-        if id is not None:
+        if id and id is not None:
             layers = [layer for layer in layers if layer['id'] == id]
         
         return layers
     
     
     def _get_workspaces(self, filter=None):
-        if filter is not None:
+        if filter and filter is not None:
             return list(set([layer['workspace'] for layer in self.layers if filter in layer['workspace']]))
         return list(set([layer['workspace'] for layer in self.layers]))
 

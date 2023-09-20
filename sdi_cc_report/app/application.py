@@ -131,19 +131,7 @@ class Application():
             return False
         
         r = Report(url=report['url'], title=report['name'], type=report['type'])
-        data = r.get_errors()
-        
-        if filter and filter is not None:
-            data = r.get_errors(filter=filter)
-            
-        if workspace and workspace is not None:
-            data = r.get_errors(workspace=workspace)
-            
-        if name and name is not None:
-            data = r.get_errors(name=name)
-            
-        if id and id is not None:
-            data = r.get_errors(id=id)
+        data = r.get_errors(filter=filter, workspace=workspace, name=name, id=id)
             
         return {
             'nb_errors': r.nb_errors,
@@ -156,20 +144,8 @@ class Application():
             return False
         
         r = Report(url=report['url'], title=report['name'], type=report['type'])
-        data = r.get_layers()
+        data = r.get_layers(filter=filter, workspace=workspace, name=name, id=id)
         
-        if filter and filter is not None:
-            data = r.get_layers(filter=filter)
-            
-        if workspace and workspace is not None:
-            data = r.get_layers(workspace=workspace)
-            
-        if name and name is not None:
-            data = r.get_layers(name=name)
-            
-        if id and id is not None:
-            data = r.get_layers(id=id)
-            
         return {
             'nb_layers': r.nb_layers,
             'layers': data.layers
@@ -181,10 +157,7 @@ class Application():
             return False
         
         r = Report(url=report['url'], title=report['name'], type=report['type'])
-        data = r.get_workspaces()
-        
-        if filter and filter is not None:
-            data = r.get_workspaces(filter=filter)
+        data = r.get_workspaces(filter=filter)
             
         return {
             'nb_workspaces': r.nb_workspaces,
