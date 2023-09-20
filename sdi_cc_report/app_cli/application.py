@@ -46,7 +46,8 @@ class ApplicationCli(Application):
         self.prompt = self.config['cli']['prompt'] or '>'
         self.rprompt = 'Disconnected'
         
-        self.history_file = self.config['history']['file'] or '.history'
+        history_file = self.config['history']['file'] or './sdi_cc_report/data/.history'
+        self.history_file = os.path.abspath(os.path.join(self.root_dir, history_file))
         
     
     def get_bottom_toolbar(self):

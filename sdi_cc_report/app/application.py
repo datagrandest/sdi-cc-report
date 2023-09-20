@@ -29,6 +29,7 @@ def merge_dicts(d1, d2, path=None):
 
 class Application():
 
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     config_file = config.__config_file__
     config_default = config.__config_default__
     locales_file = None
@@ -39,7 +40,6 @@ class Application():
 
 
     def __init__(self, config_file=None, app=None):
-
         self.app = app
         self.load_config(config_file)
 
@@ -56,7 +56,8 @@ class Application():
             self.config_file = config_file
             self.config = Yaml(file=self.config_file).data
             self.config = merge_dicts(self.config, self.config_default)
-            self.locales_file = os.path.join(self.config['locales']['directory'], self.config['locales']['lang'] + '.yaml')
+            self.locales_file = os.path.abspath(os.path.join(self.root_dir, self.config['locales']['directory'], self.config['locales']['lang'] + '.yaml'))
+            self.log_file = os.path.abspath(os.path.join(self.root_dir, self.config['log']['log_file']))
             self.translate = Yaml(file=self.locales_file).data
 
         else:
@@ -66,21 +67,21 @@ class Application():
 
     def set_logs(self, message='', level='INFO'):
         
-        if self.config['log']['log_file'] is None:
+        if self.log_file is None:
             log_message = '{now} - {level}: Log file is not define in config.yaml'.format(now=now, level='ERROR')
             self.logs.append(log_message)
             print(message)
             exit()
         
-        if not os.path.isfile(self.config['log']['log_file']):
-            with open(self.config['log']['log_file'], 'w') as log_file:
+        if not os.path.isfile(self.log_file):
+            with open(self.log_file, 'w') as log_file:
                 pass 
         
         now = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         log_message = '{now} - {level}: {message}'.format(now=now, level=level, message=message)
         self.logs.append(log_message)
         
-        with open(self.config['log']['log_file'], 'a') as log_file:
+        with open(self.log_file, 'a') as log_file:
             log_file.write(log_message + '\n')
             
         return log_message
@@ -90,7 +91,7 @@ class Application():
         where = [s.strip() for s in '+'.join(search).split('+')] if search and search is not None else None
         
         # Logs file always exists at this point beacause it is load during application initialization
-        with open(self.config['log']['log_file'], 'r') as log_file:
+        with open(self.log_file, 'r') as log_file:
             if where and where is not None:
                 logs = []
                 for log in log_file:
