@@ -118,6 +118,22 @@ class Report(object):
         
         return ''
         
+        
+    def is_filter(self, value=None, search=None):
+        if search is None or value is None:
+            return False
+      
+        if search.startswith('*'):
+            if search.endswith('*'):
+                return search[1:-1] in value
+            else:
+                return value.endswith(search[1:])
+        else:
+            if search.endswith('*'):
+                return value.startswith(search[:-1])
+            else:
+                return value == search
+
     
     def _get_errors(self, url=None, filter=None, workspace=None, name=None, id=None):
         if url is not None:
@@ -171,10 +187,10 @@ class Report(object):
             errors = [error for error in errors if filter in error['search']]
             
         if workspace and workspace is not None:
-            errors = [error for error in errors if workspace in error['workspace']]
+            errors = [error for error in errors if self.is_filter(error['workspace'], workspace)]
             
         if name and name is not None:
-            errors = [error for error in errors if name in error['name']]
+            errors = [error for error in errors if self.is_filter(error['name'], name)]
             
         if id and id is not None:
             errors = [error for error in errors if error['id'] == id]
@@ -220,10 +236,10 @@ class Report(object):
             layers = [layer for layer in layers if filter in layer['search']]
             
         if workspace and workspace is not None:
-            layers = [layer for layer in layers if workspace in layer['workspace']]
+            layers = [layer for layer in layers if self.is_filter(layer['workspace'], workspace)]
             
         if name and name is not None:
-            layers = [layer for layer in layers if name in layer['name']]
+            layers = [layer for layer in layers if self.is_filter(layer['name'], name)]
             
         if id and id is not None:
             layers = [layer for layer in layers if layer['id'] == id]
@@ -232,8 +248,9 @@ class Report(object):
     
     
     def _get_workspaces(self, filter=None):
+        # TODO: add nb_errors, nb_layers, nb_layers_ok, nb_layers_error for each workspace
         if filter and filter is not None:
-            return list(set([layer['workspace'] for layer in self.layers if filter in layer['workspace']]))
+            return list(set([layer['workspace'] for layer in self.layers if self.is_filter(layer['workspace'], filter)]))
         return list(set([layer['workspace'] for layer in self.layers]))
 
 
