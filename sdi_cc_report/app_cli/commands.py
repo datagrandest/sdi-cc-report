@@ -99,7 +99,7 @@ def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     result.extend(display.print_errors(app, report, data, limit, search=search, workspace=workspace, name=name, id=id))
 
     if csv:
-        app.save_data_to_csv(csv, data)
+        app.save_data_to_csv(csv, data['errors'])
         
     if export:
         with open(export, 'w') as f:
@@ -136,7 +136,7 @@ def on_layers(app, file, csv, search, workspace, name, id, limit, export):
         result.extend(display.print_layers(app, report, data, limit, search=search, workspace=workspace, name=name))
 
     if csv:
-        app.save_data_to_csv(csv, data)
+        app.save_data_to_csv(csv, data['layers'])
         
     if export:
         with open(export, 'w') as f:
@@ -171,9 +171,9 @@ def on_workspaces(app, file, csv, search, limit, export):
     result = []
     data = app.get_workspaces(report=report, filter=search)
     result.extend(display.print_workspaces(app, report, data, limit, search))
-    
+
     if csv:
-        app.save_data_to_csv(csv, data)
+        app.save_data_to_csv(csv, data['workspaces'])
 
     if export:
         with open(export, 'w') as f:
