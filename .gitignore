@@ -321,3 +321,7 @@ package
 output/
 test/
 tmp/
+
+# History and log files
+sdi_cc_report/data/.history
+sdi_cc_report/data/.log
