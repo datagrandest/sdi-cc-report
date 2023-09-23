@@ -116,5 +116,16 @@ def on_workspaces(app, file, csv, search, limit, export):
     commands.on_workspaces(app, file, csv, search, limit, export)
 
 
-
+@cli.command(name='dashboard')
+@click.argument('file', nargs=-1)
+@click.option('--workspace', '-ws', default='', multiple=False, type=str, help='Generate dashbord of specific workspace (if report type is WMS or WFS)')
+@click.option('--destination', '-dst', default='', multiple=False, type=str, help='Destination directory and eventually filename of dashboard (default = "dashboard")')
+@click.option('--template', '-tpl', default='', multiple=False, type=str, help='Template HTML used to geerate dashboard')
+@click.pass_obj
+def on_dashboard(app, file, workspace, destination, template):
+    """
+    > dashboard [FILE] [--workspace WORKSPACE] [--destination DESTINATION] [--template TEMPLATE]
+    Générer un tableau de bord pour le rapport selectionné
+    """
+    commands.on_dashboard(app, file, workspace, destination, template)
 

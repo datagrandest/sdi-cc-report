@@ -148,6 +148,41 @@ Exemple d'utilisation:
 > layers 0 -s ddt -e ws_ddt.txt  # affiche la liste des workspaces contenant le terme 'ddt' et l'exporte vers le fichier 'ws_ddt.txt'
 ```
 
+### `dashboard`
+
+Permet de lister les layers d'un rapport et éventuellement les erreurs associées.
+La commande générale est:
+
+``` bash
+dashboard [FILE] [--workspace WORKSPACE] [--destination DESTINATION] [--template TEMPLATE]
+```
+
+Les paramètres sont:
+
+- `FILE`                 : Identifiant du rapport à lister - Obligatoire (s'il n'est pas indiqué, la liste des rapports est affichée)
+- `--workspace`/`-ws`    : Workspace spécifique pour construire le tableau de bord - Optionnel
+- `--destination`/`-dst` : Chemin vers le fichier HTML du tableau de bord à générer (par défaut, le tableau de bord est généré dans le dossier "sdi_cc_report/dashboard". Le nom du fichier HTML dépend du type de rapport et si un wordpace a été indiqué (ex.: "wms.html, "wfs.html", "csw.html", "wfs_geograndest.html", etc.) - Optionnel
+- `--template`/`-tpl`    : Chemin vers le fichier de template à utiliser pour générer le tableau de bord. Par défaut, ce sont les fichiers situés dans "sdi_cc_report/dashboard/templates" qui sont utilisés - Optionnel
+
+Exemple d'utilisation:
+
+``` bash
+> dashboard                              # affiche la liste des rapports disponibles
+> dashboard 0                            # génère le tableau de bord pour le rapport 0 avec les options par défaut
+> dashboard 0 -ws geograndest -dst ./dashboard -tpl ./templates/my_tpl.html  # génère le table de bord pour le workspace "geograndest" avec les paramètres de template et de destination spécifiés 
+```
+
+Variables pour les templates:
+
+- '{title}':        nom du rapport (paramètre 'name' dans le fichier de configuration) 
+- '{type}':         type de rapport (paramètre 'type' dans le fichier de configuration) 
+- '{url}':          URL du rapport (paramètre 'url' dans le fichier de configuration) 
+- '{workspace}':    nom du workspace si spécifié au moment de générer le tableau de bord
+- '{csv_report}':   chemin vers le fichier CSV du rapport généré le tableau de bord (cf. commande `reports 0 --csv ...`)
+- '{csv_errors}':   chemin vers le fichier CSV des erreurs généré le tableau de bord (cf. commande `errors 0 --csv ...`)
+- '{csv_layers}':   chemin vers le fichier CSV des layers généré le tableau de bord (cf. commande `layers 0 --csv ...`)
+- '{csv_ws}':       chemin vers le fichier CSV des workspaces généré le tableau de bord (cf. commande `ws 0 --csv ...`)
+
 ## Exemple de résultats
 
 ``` bash
@@ -324,6 +359,10 @@ Workspaces:
 | 48 | geograndest-edit | ERROR  |         9 |         9 |            0 |               9 |
 +----+------------------+--------+-----------+-----------+--------------+-----------------+
 ```
+
+![](images/dashboard_wms.png)
+
+![](images/dashboard_wfs_ws.png)
 
 ## Déploiement de l'application
 

@@ -184,3 +184,29 @@ def on_workspaces(app, file, csv, search, limit, export):
     app.echo(result_text)
 
 
+def on_dashboard(app, file, workspace, destination, template):
+    """
+    
+    Générer un tableau de bord pour le rapport selectionné
+    """
+
+    if not file or file is None or len(file) == 0:
+        app.echo()
+        app.echo('ERROR: [FILE] argument is missing.')
+        display.print_reports_list(app, app.config['reports'], title="Thanks to indicate a [FILE] id.", echo=True)
+        sys.exit()
+    
+    file = [int(i.strip()) for i in ','.join(file).split(',')][0]
+    report = app.config['reports'][file]
+    
+    if workspace and workspace is not None and report['type'].lower() not in ['wms', 'wfs']:
+        app.echo()
+        app.echo('ERROR: "--workspace" option works only on WMS and WFS report type.')
+        app.echo()
+        sys.exit()
+        
+    result = app.generate_dashboard(report=report, workspace=workspace, destination=destination, template=template)
+    
+    result_text = '\n'.join(result)
+    app.echo(result_text)
+
