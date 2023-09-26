@@ -5,8 +5,6 @@ app:
   # height: 800
   # theme: 'breeze' # values: 'adapta', 'aquativo', 'arc', 'black', 'blue', 'breeze', 'clearlooks', 'elegance', 'equilux', 'itft1', 'keramik', 'kroc', 'plastik', 'radiance', 'scid themes', 'smog', 'winxpblue'
   # device: 'desktop' # values: 'desktop', 'mobile'
-  # salt: 'master2023'
-  # salt_api: 'master'
 
 locales:
     directory: './sdi_cc_report/locales/'
@@ -22,6 +20,11 @@ cli:
 log:
   log_file: './sdi_cc_report/data/.log'
 
+dashboard:
+  dashboard_directory: './sdi_cc_report/dashboard/'
+  templates_directory: './sdi_cc_report/dashboard/templates/'
+  destination_directory: './sdi_cc_report/dashboard/'
+
 reports:
   - name: WMS DataGrandEst
     type: wms
@@ -35,3 +38,11 @@ reports:
 
 requests:
   ssl_verify: False
+
+web:
+  server_host: '127.0.0.1'
+  server_port: '8001'
+  ui_host: '127.0.0.1'
+  ui_port: '8001'
+  width: 400
+  height: 800

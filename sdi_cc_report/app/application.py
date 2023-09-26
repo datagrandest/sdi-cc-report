@@ -132,7 +132,7 @@ class Application():
         if report is None:
             return False
         
-        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        r = Report(url=report['url'], title=report['name'], type=report['type'], ssl_verify=self.config['requests']['ssl_verify'])
         data = r.get_errors(filter=filter, workspace=workspace, name=name, id=id)
             
         return {
@@ -145,7 +145,7 @@ class Application():
         if report is None:
             return False
         
-        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        r = Report(url=report['url'], title=report['name'], type=report['type'], ssl_verify=self.config['requests']['ssl_verify'])
         data = r.get_layers(filter=filter, workspace=workspace, name=name, id=id)
         
         return {
@@ -158,7 +158,7 @@ class Application():
         if report is None:
             return False
         
-        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        r = Report(url=report['url'], title=report['name'], type=report['type'], ssl_verify=self.config['requests']['ssl_verify'])
         data = r.get_workspaces(filter=filter)
             
         return {
@@ -179,7 +179,7 @@ class Application():
         if report is None:
             return False
         
-        r = Report(url=report['url'], title=report['name'], type=report['type'])
+        r = Report(url=report['url'], title=report['name'], type=report['type'], ssl_verify=self.config['requests']['ssl_verify'])
         
         return {
             'nb_errors': r.nb_errors,
