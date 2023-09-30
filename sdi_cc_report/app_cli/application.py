@@ -48,6 +48,9 @@ class ApplicationCli(Application):
         
         history_file = self.config['history']['file'] or './sdi_cc_report/data/.history'
         self.history_file = os.path.abspath(os.path.join(self.root_dir, history_file))
+        if not os.path.isfile(self.history_file):
+            with open(self.history_file, 'w') as history_file:
+                pass 
         
     
     def get_bottom_toolbar(self):
