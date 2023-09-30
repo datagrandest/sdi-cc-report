@@ -326,3 +326,5 @@ tmp/
 sdi_cc_report/data/.history
 sdi_cc_report/data/.log
 auto-py-to-exe.json
+
+!sdi_cc_report/app_web/ui/*
