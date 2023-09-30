@@ -43,12 +43,13 @@ class Application():
         self.app = app
         self.load_config(config_file)
 
+        self.create_directories()
+
         self.add_logs(message='=' * 80)
         self.add_logs(message=self.translate['init_message'].format(app=self.app))
         self.add_logs(message='Config file "{config_file}" loaded.'.format(config_file=self.config_file))
         self.add_logs(message='Locales file "{locales_file}" loaded (language "{lang}")'.format(locales_file=self.locales_file, lang=self.translate['lang']))
 
-        self.create_directories()
 
 
     def load_config(self, config_file=None):
@@ -111,6 +112,9 @@ class Application():
 
 
     def create_directories(self):
+        path = os.path.dirname(self.log_file)
+        if not os.path.exists(path):
+            os.makedirs(path)
         return True
 
 
