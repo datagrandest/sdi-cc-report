@@ -360,9 +360,9 @@ Workspaces:
 +----+------------------+--------+-----------+-----------+--------------+-----------------+
 ```
 
-![](images/dashboard_wms.png)
+![](../../images/dashboard_wms.png)
 
-![](images/dashboard_wfs_ws.png)
+![](../../images/dashboard_wfs_ws.png)
 
 ## Déploiement de l'application
 
