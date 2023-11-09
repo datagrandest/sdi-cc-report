@@ -145,8 +145,9 @@ class Report(object):
 
         errors = []
         for error_text in errors_text:
+            # todo: we could use regular expressions to parse text?
             error_lines = error_text.split("\n")
-            e_id = error_lines[0].lstrip()[1:]
+            e_id = int(error_lines[0].lstrip()[1:])
             e_ws = ""
             e_name = error_lines[1].lstrip()[7:]
 
@@ -213,7 +214,7 @@ class Report(object):
 
             error["search"] = " | ".join(
                 [
-                    error["id"],
+                    str(error["id"]),
                     error["workspace"],
                     error["name"],
                     error["error_code"],
@@ -223,7 +224,7 @@ class Report(object):
 
             errors.append(error)
 
-        if filter and filter is not None:
+        if filter and filter is not None:  # todo: second test seems useless
             errors = [error for error in errors if filter in error["search"]]
 
         if workspace and workspace is not None:
@@ -262,7 +263,7 @@ class Report(object):
                     "nb_errors": 0,
                     "errors": [],
                     "search": " | ".join(
-                        [error["id"], error["workspace"], error["name"]]
+                        [str(error["id"]), error["workspace"], error["name"]]
                     ),
                 }
                 layers_id.append(error["id"])
