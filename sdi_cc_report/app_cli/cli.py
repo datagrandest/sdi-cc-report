@@ -6,7 +6,8 @@ from sdi_cc_report.app_cli import commands
 
 bindings = KeyBindings()
 
-@bindings.add('c-q')
+
+@bindings.add("c-q")
 @click.pass_obj
 def _(app, event):
     """Exit"""
@@ -27,22 +28,22 @@ def cli(ctx, app):
 def repl(app):
     """Start an interactive session"""
     app.cli_repl(app)
-    
 
-@cli.command(name='clear')
+
+@cli.command(name="clear")
 def on_clear():
     """Clear screen"""
     commands.on_clear()
 
 
-@cli.command(name='exit')
+@cli.command(name="exit")
 @click.pass_obj
 def on_exit(app):
     """Exit"""
     commands.on_exit(app)
 
 
-@cli.command(name='test')
+@cli.command(name="test")
 @click.pass_obj
 def on_test(app):
     """
@@ -51,10 +52,19 @@ def on_test(app):
     commands.on_test(app)
 
 
-@cli.command(name='reports')
-@click.argument('files', nargs=-1, default=None)
-@click.option('--csv', '-c', default='', multiple=False, type=str, help='Filename to save data to CSV')
-@click.option('--export', '-e', default=None, type=str, help='Filename to export result')
+@cli.command(name="reports")
+@click.argument("files", nargs=-1, default=None)
+@click.option(
+    "--csv",
+    "-c",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filename to save data to CSV",
+)
+@click.option(
+    "--export", "-e", default=None, type=str, help="Filename to export result"
+)
 @click.pass_obj
 def on_reports(app, files, csv, export):
     """
@@ -65,15 +75,49 @@ def on_reports(app, files, csv, export):
     commands.on_reports(app, files, csv, export)
 
 
-@cli.command(name='errors')
-@click.argument('file', nargs=-1)
-@click.option('--csv', '-c', default='', multiple=False, type=str, help='Filename to save data to CSV')
-@click.option('--search', '-s', default='', multiple=False, type=str, help='Search query to filter layers list')
-@click.option('--workspace', '-ws', default='', multiple=False, type=str, help='Filter layers list according workspace name (if report type is WMS or WFS)')
-@click.option('--name', '-n', default='', multiple=False, type=str, help='Filter layers list according name layer')
-@click.option('--id', '-i', default=None, multiple=False, help='Id of layers to display')
-@click.option('--limit', '-l', default='10', type=str, help='Number of layers to return')
-@click.option('--export', '-e', default=None, type=str, help='Filename to export result')
+@cli.command(name="errors")
+@click.argument("file", nargs=-1)
+@click.option(
+    "--csv",
+    "-c",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filename to save data to CSV",
+)
+@click.option(
+    "--search",
+    "-s",
+    default="",
+    multiple=False,
+    type=str,
+    help="Search query to filter layers list",
+)
+@click.option(
+    "--workspace",
+    "-ws",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filter layers list according workspace name (if report type is WMS or WFS)",
+)
+@click.option(
+    "--name",
+    "-n",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filter layers list according name layer",
+)
+@click.option(
+    "--id", "-i", default=None, multiple=False, help="Id of layers to display"
+)
+@click.option(
+    "--limit", "-l", default="10", type=str, help="Number of layers to return"
+)
+@click.option(
+    "--export", "-e", default=None, type=str, help="Filename to export result"
+)
 @click.pass_obj
 def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     """
@@ -83,15 +127,49 @@ def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     commands.on_errors(app, file, csv, search, workspace, name, id, limit, export)
 
 
-@cli.command(name='layers')
-@click.argument('file', nargs=-1)
-@click.option('--csv', '-c', default='', multiple=False, type=str, help='Filename to save data to CSV')
-@click.option('--search', '-s', default='', multiple=False, type=str, help='Search query to filter layers list')
-@click.option('--workspace', '-ws', default='', multiple=False, type=str, help='Filter layers list according workspace name (if report type is WMS or WFS)')
-@click.option('--name', '-n', default='', multiple=False, type=str, help='Filter layers list according name layer')
-@click.option('--id', '-i', default=None, multiple=False, help='Id of layers to display')
-@click.option('--limit', '-l', default='10', type=str, help='Number of layers to return')
-@click.option('--export', '-e', default=None, type=str, help='Filename to export result')
+@cli.command(name="layers")
+@click.argument("file", nargs=-1)
+@click.option(
+    "--csv",
+    "-c",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filename to save data to CSV",
+)
+@click.option(
+    "--search",
+    "-s",
+    default="",
+    multiple=False,
+    type=str,
+    help="Search query to filter layers list",
+)
+@click.option(
+    "--workspace",
+    "-ws",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filter layers list according workspace name (if report type is WMS or WFS)",
+)
+@click.option(
+    "--name",
+    "-n",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filter layers list according name layer",
+)
+@click.option(
+    "--id", "-i", default=None, multiple=False, help="Id of layers to display"
+)
+@click.option(
+    "--limit", "-l", default="10", type=str, help="Number of layers to return"
+)
+@click.option(
+    "--export", "-e", default=None, type=str, help="Filename to export result"
+)
 @click.pass_obj
 def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     """
@@ -101,12 +179,30 @@ def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     commands.on_layers(app, file, csv, search, workspace, name, id, limit, export)
 
 
-@cli.command(name='ws')
-@click.argument('file', nargs=-1)
-@click.option('--csv', '-c', default='', multiple=False, type=str, help='Filename to save data to CSV')
-@click.option('--search', '-s', default='', multiple=False, type=str, help='Search query to filter workspaces list')
-@click.option('--limit', '-l', default='10', type=str, help='Number of workspaces to return')
-@click.option('--export', '-e', default=None, type=str, help='Filename to export result')
+@cli.command(name="ws")
+@click.argument("file", nargs=-1)
+@click.option(
+    "--csv",
+    "-c",
+    default="",
+    multiple=False,
+    type=str,
+    help="Filename to save data to CSV",
+)
+@click.option(
+    "--search",
+    "-s",
+    default="",
+    multiple=False,
+    type=str,
+    help="Search query to filter workspaces list",
+)
+@click.option(
+    "--limit", "-l", default="10", type=str, help="Number of workspaces to return"
+)
+@click.option(
+    "--export", "-e", default=None, type=str, help="Filename to export result"
+)
 @click.pass_obj
 def on_workspaces(app, file, csv, search, limit, export):
     """
@@ -116,11 +212,32 @@ def on_workspaces(app, file, csv, search, limit, export):
     commands.on_workspaces(app, file, csv, search, limit, export)
 
 
-@cli.command(name='dashboard')
-@click.argument('file', nargs=-1)
-@click.option('--workspace', '-ws', default='', multiple=False, type=str, help='Generate dashbord of specific workspace (if report type is WMS or WFS)')
-@click.option('--destination', '-dst', default='', multiple=False, type=str, help='Destination directory and eventually filename of dashboard (default = "dashboard")')
-@click.option('--template', '-tpl', default='', multiple=False, type=str, help='Template HTML used to geerate dashboard')
+@cli.command(name="dashboard")
+@click.argument("file", nargs=-1)
+@click.option(
+    "--workspace",
+    "-ws",
+    default="",
+    multiple=False,
+    type=str,
+    help="Generate dashbord of specific workspace (if report type is WMS or WFS)",
+)
+@click.option(
+    "--destination",
+    "-dst",
+    default="",
+    multiple=False,
+    type=str,
+    help='Destination directory and eventually filename of dashboard (default = "dashboard")',
+)
+@click.option(
+    "--template",
+    "-tpl",
+    default="",
+    multiple=False,
+    type=str,
+    help="Template HTML used to geerate dashboard",
+)
 @click.pass_obj
 def on_dashboard(app, file, workspace, destination, template):
     """
@@ -128,4 +245,3 @@ def on_dashboard(app, file, workspace, destination, template):
     Générer un tableau de bord pour le rapport selectionné
     """
     commands.on_dashboard(app, file, workspace, destination, template)
-

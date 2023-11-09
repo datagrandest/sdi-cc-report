@@ -7,5 +7,4 @@ from sdi_cc_report.sdi_cc_report_web import run
 os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.dirname(__file__))
 
-application = run('wsgi')
-
+application = run("wsgi")
