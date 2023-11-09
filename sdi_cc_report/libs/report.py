@@ -161,24 +161,55 @@ class Report(object):
                 "id": e_id,
                 "workspace": e_ws,
                 "name": e_name,
-                "error": 0,
-                "error_code": "NONE",
-                "message": "OK",
+                "error": 0,  # todo: what does this mean?
+                "error_code": "",
+                "message": "",
                 "search": "",
             }
 
-            if len(error_lines) == 3:
+            if len(error_lines) > 2:
                 error["error"] = 1
-                error["message"] = error_lines[2].lstrip()[7:]
+                error["message"] = "\n".join(error_lines[2:]).lstrip()[7:]
+                message_lower = error["message"].lower()
 
-                if error["message"].lower().startswith("metadata"):
+                if message_lower.startswith("metadata"):
                     error["error_code"] = "ERROR_MD_LINK"
-                if error["message"].lower().startswith("no metadata"):
+                    if "mismatched tag" in message_lower:
+                        error["error_code"] = "ERROR_MD_LINK - mismatched tag"
+                    elif "certificate verify failed" in message_lower:
+                        error[
+                            "error_code"
+                        ] = "ERROR_MD_LINK - certificate verify failed"
+                    elif "failed to resolve" in message_lower:
+                        error["error_code"] = "ERROR_MD_LINK - failed to resolve"
+                    elif "http 404" in message_lower:
+                        error["error_code"] = "ERROR_MD_LINK - HTTP 404"
+                    elif "not well-formed" in message_lower:
+                        error["error_code"] = "ERROR_MD_LINK - not well-formed"
+                    elif (
+                        "Type 'xml.etree.elementtree.element' cannot be serialized"
+                        in message_lower
+                    ):
+                        error[
+                            "error_code"
+                        ] = "ERROR_MD_LINK - XML element cannot be serialized"
+
+                elif message_lower.startswith("no metadata"):
                     error["error_code"] = "ERROR_NO_MD"
-                if error["message"].lower().startswith("the requested style"):
+                elif message_lower.startswith("the requested style"):
                     error["error_code"] = "ERROR_STYLE"
-                if error["message"].lower().startswith("rendering process failed"):
+                elif (
+                    "rendering process failed" in message_lower
+                    or "error rendering" in message_lower
+                ):
                     error["error_code"] = "ERROR_RENDERING"
+                    if "unsupported geometry type" in error["message"]:
+                        error[
+                            "error_code"
+                        ] = "ERROR_RENDERING - unsupported geometry type"
+
+                elif message_lower.startswith("remote layers are not allowed"):
+                    error["error_code"] = "REMOTE_LAYER"
 
             error["search"] = " | ".join(
                 [
