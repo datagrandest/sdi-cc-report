@@ -360,9 +360,9 @@ Workspaces:
 +----+------------------+--------+-----------+-----------+--------------+-----------------+
 ```
 
-![](../../images/dashboard_wms.png)
+![Exemple de tableau de bord des erreurs pour le service WMS](../../images/dashboard_wms.png)
 
-![](../../images/dashboard_wfs_ws.png)
+![Exemple de tableau de bord des erreurs pour le service WFS](../../images/dashboard_wfs_ws.png)
 
 ## Déploiement de l'application
 
