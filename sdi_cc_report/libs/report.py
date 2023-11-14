@@ -3,7 +3,6 @@
 """ Module docstring
 """
 
-import os
 import json
 import csv
 import requests
