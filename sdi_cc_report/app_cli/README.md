@@ -2,6 +2,28 @@
 
 Application Python en ligne de commande permettant de consulter les rapports issus du script ["SDI Consistence Check"](https://github.com/georchestra/sdi-consistence-check).
 
+## Déploiement de l'application
+
+Après avoir cloné le dépôt, il est conseillé d'utiliser un environnement virtuel Python.
+
+Sous Windows:
+
+``` bash
+python.exe -m venv venv
+.\venv\Scripts\activate
+pip.exe install -r .\requirements_cli.txt
+python.exe .\report.py
+```
+
+Sous linux:
+
+``` bash
+python -m venv venv
+source ./venv/bin/activate
+pip install -r ./requirements_cli.txt
+python ./report.py
+```
+
 ## Utilisation
 
 Il est possible d'utiliser cette application sous forme de script CLI.
@@ -363,25 +385,3 @@ Workspaces:
 ![Exemple de tableau de bord des erreurs pour le service WMS](../../images/dashboard_wms.png)
 
 ![Exemple de tableau de bord des erreurs pour le service WFS](../../images/dashboard_wfs_ws.png)
-
-## Déploiement de l'application
-
-Après avoir cloné le dépôt, il est conseillé d'utiliser un environnement virtuel Python.
-
-Sous Windows:
-
-``` bash
-python.exe -m venv venv
-.\venv\Scripts\activate
-pip.exe install -r .\requirements_cli.txt
-python.exe .\report.py
-```
-
-Sous linux:
-
-``` bash
-python -m venv venv
-source ./venv/bin/activate
-pip install -r ./requirements_cli.txt
-python ./report.py
-```
