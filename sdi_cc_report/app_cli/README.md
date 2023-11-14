@@ -380,6 +380,6 @@ Sous linux:
 
 ``` bash
 python -m venv venv
-source .\venv\bin\activate
-python .\report.py
+source ./venv/bin/activate
+python ./report.py
 ```
