@@ -207,9 +207,10 @@ class Report(object):
                         error[
                             "error_code"
                         ] = "ERROR_RENDERING - unsupported geometry type"
-
                 elif message_lower.startswith("remote layers are not allowed"):
                     error["error_code"] = "REMOTE_LAYER"
+                elif message_lower.startswith("java.io.ioexception"):
+                    error["error_code"] = "JAVA_EXCEPTION"
 
             error["search"] = " | ".join(
                 [
