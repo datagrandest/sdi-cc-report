@@ -2,6 +2,28 @@
 
 Application Python permettant de générer une API de consultation des rapports issus du script ["SDI Consistence Check"](https://github.com/georchestra/sdi-consistence-check).
 
+## Déploiement de l'application
+
+Après avoir cloné le dépôt, il est conseillé d'utiliser un environnement virtuel Python.
+
+Sous Windows:
+
+``` bash
+python.exe -m venv venv
+.\venv\Scripts\activate
+pip.exe install -r .\sdi_cc_report\app_web\requirements_web.txt
+python.exe .\report.py
+```
+
+Sous linux:
+
+``` bash
+python -m venv venv
+source ./venv/bin/activate
+pip install -r ./sdi_cc_report/app_web/requirements_web.txt
+python ./report.py
+```
+
 ## Utilisation
 
 L'application fonctionne grâce à un serveur web basé sur "bottle". Elle permet notamment de pouvoir développer et héberger une application en ligne. Cette dernière devra être déposée dans le dossier "./sdi_cc_report/app_web/ui/dist".
@@ -15,7 +37,6 @@ python.exe .\report.py web wsgi     # mode WSGI pour l'utilisation sur certains 
 ```
 
 Par défaut le serveur propose une page, avec d'une part des liens vers les réponses de l'API notamment, et d'autre part des tableaux de bords simples connectés directement à l'API.
-
 
 ## API
 
@@ -128,7 +149,7 @@ Resultat:
 
 Exemples:
 
-URL: http://127.0.0.1:8001/errors/0?ws=geograndest&details=1   # Liste les erreurs du workspace 'geograndest' du rapport n°0
+URL: <http://127.0.0.1:8001/errors/0?ws=geograndest&details=1>   # Liste les erreurs du workspace 'geograndest' du rapport n°0
 
 Resultat:
 
