@@ -373,6 +373,7 @@ Sous Windows:
 ``` bash
 python.exe -m venv venv
 .\venv\Scripts\activate
+pip.exe install -r .\requirements_cli.txt
 python.exe .\report.py
 ```
 
@@ -381,5 +382,6 @@ Sous linux:
 ``` bash
 python -m venv venv
 source ./venv/bin/activate
+pip install -r ./requirements_cli.txt
 python ./report.py
 ```
