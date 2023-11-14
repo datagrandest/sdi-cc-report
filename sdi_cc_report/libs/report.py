@@ -187,7 +187,7 @@ class Report(object):
                     elif "not well-formed" in message_lower:
                         error["error_code"] = "ERROR_MD_LINK - not well-formed"
                     elif (
-                        "Type 'xml.etree.elementtree.element' cannot be serialized"
+                        "type 'xml.etree.elementtree.element' cannot be serialized"
                         in message_lower
                     ):
                         error[
