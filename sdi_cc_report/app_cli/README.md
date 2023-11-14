@@ -174,9 +174,9 @@ Exemple d'utilisation:
 
 Variables pour les templates:
 
-- '{title}':        nom du rapport (paramètre 'name' dans le fichier de configuration) 
-- '{type}':         type de rapport (paramètre 'type' dans le fichier de configuration) 
-- '{url}':          URL du rapport (paramètre 'url' dans le fichier de configuration) 
+- '{title}':        nom du rapport (paramètre 'name' dans le fichier de configuration)
+- '{type}':         type de rapport (paramètre 'type' dans le fichier de configuration)
+- '{url}':          URL du rapport (paramètre 'url' dans le fichier de configuration)
 - '{workspace}':    nom du workspace si spécifié au moment de générer le tableau de bord
 - '{csv_report}':   chemin vers le fichier CSV du rapport généré le tableau de bord (cf. commande `reports 0 --csv ...`)
 - '{csv_errors}':   chemin vers le fichier CSV des erreurs généré le tableau de bord (cf. commande `errors 0 --csv ...`)
