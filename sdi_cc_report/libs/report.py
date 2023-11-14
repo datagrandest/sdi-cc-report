@@ -280,7 +280,12 @@ class Report(object):
                     }
                 )
 
-        layers = [layers[l] for l in layers]
+        # todo: dangerous to use the same variable name for two different
+        # things in the same function
+        # before this line the layers variable is a dict and after this line
+        # it's a list
+        # We'd better two different variables
+        layers = [layers[layer] for layer in layers]
 
         if filter and filter is not None:
             layers = [layer for layer in layers if filter in layer["search"]]
@@ -401,6 +406,7 @@ class Report(object):
 
         return self._save_to_csv(file=file, data=self.workspaces)
 
+    # todo: need some cleanup?
     # def dict(self):
     #     return vars(self)
 
@@ -420,6 +426,7 @@ if __name__ == "__main__":
     csw_type = "csw"
     csw_url = "https://www.datagrandest.fr/public/csw-report.log"
 
+    # todo: need some cleanup?
     # wms_report = Report(url=wms_url, type='wms')
     # print(
     #     wms_report.errors,
@@ -432,6 +439,7 @@ if __name__ == "__main__":
     #     wms_report.nb_workspaces,
     # )
 
+    # todo: need some cleanup?
     # csw_report = Report().load(url=csw_url, type=csw_type, title=csw_name)
     # print(
     #     csw_report.errors,
@@ -445,6 +453,7 @@ if __name__ == "__main__":
     # )
 
     wfs_report = Report(url=wfs_url, type=wfs_type, title=wfs_name)
+    # todo: need some cleanup?
     # print(
     #     wfs_report.errors,
     #     wfs_report.layers,
