@@ -1,6 +1,12 @@
 import sys
 
-# from sdi_cc_report import sdi_cc_report_tk_gui, sdi_cc_report_tk_cli, sdi_cc_report_cli, sdi_cc_report_eel, sdi_cc_report_web
+# from sdi_cc_report import (
+#     sdi_cc_report_cli,
+#     sdi_cc_report_eel,
+#     sdi_cc_report_tk_cli,
+#     sdi_cc_report_tk_gui,
+#     sdi_cc_report_web,
+# )
 
 if __name__ == "__main__":
     # NOT IMPLEMENTED
