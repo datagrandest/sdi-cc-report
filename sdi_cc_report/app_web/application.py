@@ -14,22 +14,20 @@ __email__ = "guillaume.ryckelynck@grandest.fr"
 __status__ = "Developement"
 
 
-import os
-import sys
-import time
-import platform
-import webbrowser
-import threading
 import json
+import os
+import platform
+import sys
+import threading
+import time
+import webbrowser
 
 import bottle
 
 try:
     import webview
 except ImportError:
-    print(
-        "Module 'webview' doesn't install or can't be load. Only 'wsgi' mode enabled."
-    )
+    print("Module 'webview' doesn't install or can't be load. Only 'wsgi' mode enabled.")
 
 from sdi_cc_report.app.application import Application
 
@@ -81,9 +79,7 @@ class ApplicationWeb(Application):
         )
         self._ui_host = ui_host or self.config["web"]["ui_host"]
         self._ui_port = ui_port or self.config["web"]["ui_port"]
-        self._ui_url = "http://{host}:{port}".format(
-            host=self._ui_host, port=self._ui_port
-        )
+        self._ui_url = "http://{host}:{port}".format(host=self._ui_host, port=self._ui_port)
         self._debug = debug
         self._width = self.config["web"]["width"]
         self._height = self.config["web"]["height"]
@@ -124,24 +120,16 @@ class ApplicationWeb(Application):
         self._app.route("/", method="GET", callback=self._route_index)
         self._app.route("/reports", method="GET", callback=self._route_reports)
         self._app.route("/reports/", method="GET", callback=self._route_reports)
-        self._app.route(
-            "/reports/<report:int>", method="GET", callback=self._route_reports
-        )
+        self._app.route("/reports/<report:int>", method="GET", callback=self._route_reports)
         self._app.route("/errors", method="GET", callback=self._route_errors)
         self._app.route("/errors/", method="GET", callback=self._route_errors)
-        self._app.route(
-            "/errors/<report:int>", method="GET", callback=self._route_errors
-        )
+        self._app.route("/errors/<report:int>", method="GET", callback=self._route_errors)
         self._app.route("/layers", method="GET", callback=self._route_layers)
         self._app.route("/layers/", method="GET", callback=self._route_layers)
-        self._app.route(
-            "/layers/<report:int>", method="GET", callback=self._route_layers
-        )
+        self._app.route("/layers/<report:int>", method="GET", callback=self._route_layers)
         self._app.route("/workspaces", method="GET", callback=self._route_ws)
         self._app.route("/workspaces/", method="GET", callback=self._route_ws)
-        self._app.route(
-            "/workspaces/<report:int>", method="GET", callback=self._route_ws
-        )
+        self._app.route("/workspaces/<report:int>", method="GET", callback=self._route_ws)
 
         self._app.route("/hello", callback=self._route_hello)
         self._app.route("/hello/", callback=self._route_hello)
@@ -177,9 +165,7 @@ class ApplicationWeb(Application):
 
     def _route_index(self):
         # TODO: chemin à mettre dans un fichier de config... web_ui_path ou directory
-        file = os.path.join(
-            os.getcwd(), "sdi_cc_report", "app_web", "ui", "dist", "index.html"
-        )
+        file = os.path.join(os.getcwd(), "sdi_cc_report", "app_web", "ui", "dist", "index.html")
         return bottle.template(file)
 
     def _route_hello(self, name="Guest"):
@@ -225,9 +211,7 @@ class ApplicationWeb(Application):
         details = params["details"] if "details" in params else None
 
         report = self.config["reports"][report]
-        data = self.get_errors(
-            report=report, filter=search, workspace=workspace, name=name, id=id
-        )
+        data = self.get_errors(report=report, filter=search, workspace=workspace, name=name, id=id)
 
         if offset is not None or limit and limit is not None:
             offset = 0 if offset is None else offset
@@ -260,9 +244,7 @@ class ApplicationWeb(Application):
         details = params["details"] if "details" in params else None
 
         report = self.config["reports"][report]
-        data = self.get_layers(
-            report=report, filter=search, workspace=workspace, name=name, id=id
-        )
+        data = self.get_layers(report=report, filter=search, workspace=workspace, name=name, id=id)
 
         if offset is not None or limit and limit is not None:
             offset = 0 if offset is None else offset
@@ -288,9 +270,7 @@ class ApplicationWeb(Application):
 
         report = self.config["reports"][report]
         if report["type"].lower() not in ["wms", "wfs"]:
-            response = {
-                "message": "/wokspaces enable only for WMS and WFS report type."
-            }
+            response = {"message": "/wokspaces enable only for WMS and WFS report type."}
             self._send_response(code=404, content=response, format="json")
 
         params = bottle.request.params
@@ -315,9 +295,7 @@ class ApplicationWeb(Application):
             return data
 
         else:
-            return self._send_response(
-                code=200, content=data["workspaces"], format="json"
-            )
+            return self._send_response(code=200, content=data["workspaces"], format="json")
 
     def start_bottle_server(self):
         self._app.run(host=self._server_host, port=self._server_port, debug=self._debug)
@@ -331,9 +309,7 @@ class ApplicationWeb(Application):
         elif self.mode == "browser":  # open in browser
             self._debug = True
             # TODO: faire en sorte que l'on puisse arréter le serveur qui démarre dans un Thead...
-            serverthread = threading.Thread(
-                target=self._open_browser, args=[self._ui_url]
-            )
+            serverthread = threading.Thread(target=self._open_browser, args=[self._ui_url])
             serverthread.start()
             self.start_bottle_server()
 

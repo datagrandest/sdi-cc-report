@@ -3,8 +3,9 @@
 """ Module docstring
 """
 
-import json
 import csv
+import json
+
 import requests
 
 # from .text import Text
@@ -138,9 +139,7 @@ class Report(object):
             self.url = url
 
         self.text = self._get_report_text(url=self.url)
-        errors_text = [
-            error for error in self.text.split("\n\n") if error.startswith("#")
-        ]
+        errors_text = [error for error in self.text.split("\n\n") if error.startswith("#")]
 
         errors = []
         for error_text in errors_text:
@@ -177,9 +176,7 @@ class Report(object):
                     if "mismatched tag" in message_lower:
                         error["error_code"] = "ERROR_MD_LINK - mismatched tag"
                     elif "certificate verify failed" in message_lower:
-                        error[
-                            "error_code"
-                        ] = "ERROR_MD_LINK - certificate verify failed"
+                        error["error_code"] = "ERROR_MD_LINK - certificate verify failed"
                     elif "failed to resolve" in message_lower:
                         error["error_code"] = "ERROR_MD_LINK - failed to resolve"
                     elif "http 404" in message_lower:
@@ -190,9 +187,7 @@ class Report(object):
                         "type 'xml.etree.elementtree.element' cannot be serialized"
                         in message_lower
                     ):
-                        error[
-                            "error_code"
-                        ] = "ERROR_MD_LINK - XML element cannot be serialized"
+                        error["error_code"] = "ERROR_MD_LINK - XML element cannot be serialized"
 
                 elif message_lower.startswith("no metadata"):
                     error["error_code"] = "ERROR_NO_MD"
@@ -204,9 +199,7 @@ class Report(object):
                 ):
                     error["error_code"] = "ERROR_RENDERING"
                     if "unsupported geometry type" in error["message"]:
-                        error[
-                            "error_code"
-                        ] = "ERROR_RENDERING - unsupported geometry type"
+                        error["error_code"] = "ERROR_RENDERING - unsupported geometry type"
                 elif message_lower.startswith("remote layers are not allowed"):
                     error["error_code"] = "REMOTE_LAYER"
                 elif message_lower.startswith("java.io.ioexception"):
@@ -228,11 +221,7 @@ class Report(object):
             errors = [error for error in errors if filter in error["search"]]
 
         if workspace and workspace is not None:
-            errors = [
-                error
-                for error in errors
-                if self.is_filter(error["workspace"], workspace)
-            ]
+            errors = [error for error in errors if self.is_filter(error["workspace"], workspace)]
 
         if name and name is not None:
             errors = [error for error in errors if self.is_filter(error["name"], name)]
@@ -245,9 +234,7 @@ class Report(object):
     def _get_nb_errors(self):
         return len(self.errors)
 
-    def _get_layers(
-        self, url=None, errors=None, filter=None, workspace=None, name=None, id=None
-    ):
+    def _get_layers(self, url=None, errors=None, filter=None, workspace=None, name=None, id=None):
         if url is not None:
             self.errors = self._get_errors(url=url)
 
@@ -262,9 +249,7 @@ class Report(object):
                     "error": error["error"],
                     "nb_errors": 0,
                     "errors": [],
-                    "search": " | ".join(
-                        [str(error["id"]), error["workspace"], error["name"]]
-                    ),
+                    "search": " | ".join([str(error["id"]), error["workspace"], error["name"]]),
                 }
                 layers_id.append(error["id"])
 
@@ -292,11 +277,7 @@ class Report(object):
             layers = [layer for layer in layers if filter in layer["search"]]
 
         if workspace and workspace is not None:
-            layers = [
-                layer
-                for layer in layers
-                if self.is_filter(layer["workspace"], workspace)
-            ]
+            layers = [layer for layer in layers if self.is_filter(layer["workspace"], workspace)]
 
         if name and name is not None:
             layers = [layer for layer in layers if self.is_filter(layer["name"], name)]
@@ -330,9 +311,7 @@ class Report(object):
         workspaces = [workspaces[ws] for ws in workspaces]
 
         if workspace and workspace is not None:
-            workspaces = [
-                ws for ws in workspaces if self.is_filter(ws["workspace"], workspace)
-            ]
+            workspaces = [ws for ws in workspaces if self.is_filter(ws["workspace"], workspace)]
 
         return workspaces
 
@@ -363,18 +342,14 @@ class Report(object):
         return file
 
     def get_errors(self, filter=None, workspace=None, name=None, id=None):
-        self.errors = self._get_errors(
-            filter=filter, workspace=workspace, name=name, id=id
-        )
+        self.errors = self._get_errors(filter=filter, workspace=workspace, name=name, id=id)
         self.layers = self._get_layers()
         self.workspaces = self._get_workspaces()
         return self
 
     def get_layers(self, filter=None, workspace=None, name=None, id=None):
         self.errors = self._get_errors()
-        self.layers = self._get_layers(
-            filter=filter, workspace=workspace, name=name, id=id
-        )
+        self.layers = self._get_layers(filter=filter, workspace=workspace, name=name, id=id)
         self.workspaces = self._get_workspaces()
         return self
 

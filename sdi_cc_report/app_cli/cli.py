@@ -3,7 +3,6 @@ from prompt_toolkit.key_binding import KeyBindings
 
 from sdi_cc_report.app_cli import commands
 
-
 bindings = KeyBindings()
 
 
@@ -62,9 +61,7 @@ def on_test(app):
     type=str,
     help="Filename to save data to CSV",
 )
-@click.option(
-    "--export", "-e", default=None, type=str, help="Filename to export result"
-)
+@click.option("--export", "-e", default=None, type=str, help="Filename to export result")
 @click.pass_obj
 def on_reports(app, files, csv, export):
     """
@@ -109,15 +106,9 @@ def on_reports(app, files, csv, export):
     type=str,
     help="Filter layers list according name layer",
 )
-@click.option(
-    "--id", "-i", default=None, multiple=False, help="Id of layers to display"
-)
-@click.option(
-    "--limit", "-l", default="10", type=str, help="Number of layers to return"
-)
-@click.option(
-    "--export", "-e", default=None, type=str, help="Filename to export result"
-)
+@click.option("--id", "-i", default=None, multiple=False, help="Id of layers to display")
+@click.option("--limit", "-l", default="10", type=str, help="Number of layers to return")
+@click.option("--export", "-e", default=None, type=str, help="Filename to export result")
 @click.pass_obj
 def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     """
@@ -161,15 +152,9 @@ def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     type=str,
     help="Filter layers list according name layer",
 )
-@click.option(
-    "--id", "-i", default=None, multiple=False, help="Id of layers to display"
-)
-@click.option(
-    "--limit", "-l", default="10", type=str, help="Number of layers to return"
-)
-@click.option(
-    "--export", "-e", default=None, type=str, help="Filename to export result"
-)
+@click.option("--id", "-i", default=None, multiple=False, help="Id of layers to display")
+@click.option("--limit", "-l", default="10", type=str, help="Number of layers to return")
+@click.option("--export", "-e", default=None, type=str, help="Filename to export result")
 @click.pass_obj
 def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     """
@@ -197,12 +182,8 @@ def on_layers(app, file, csv, search, workspace, name, id, limit, export):
     type=str,
     help="Search query to filter workspaces list",
 )
-@click.option(
-    "--limit", "-l", default="10", type=str, help="Number of workspaces to return"
-)
-@click.option(
-    "--export", "-e", default=None, type=str, help="Filename to export result"
-)
+@click.option("--limit", "-l", default="10", type=str, help="Number of workspaces to return")
+@click.option("--export", "-e", default=None, type=str, help="Filename to export result")
 @click.pass_obj
 def on_workspaces(app, file, csv, search, limit, export):
     """

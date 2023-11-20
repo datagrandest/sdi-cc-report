@@ -1,4 +1,5 @@
 import sys
+
 from master import app_cli  # , app_gui
 
 if __name__ == "__main__":

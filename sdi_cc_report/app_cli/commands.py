@@ -65,18 +65,12 @@ def on_reports(app, files, csv, export):
         for file in files:
             if file < len(reports):
                 data = app.get_report_summary(report=reports[file])
-                result.extend(
-                    display.print_report_summary(app, report=reports[file], data=data)
-                )
+                result.extend(display.print_report_summary(app, report=reports[file], data=data))
             else:
                 result.append("")
-                result.append(
-                    "ERROR: file indice {file} doesn" "t exist".format(file=file)
-                )
+                result.append("ERROR: file indice {file} doesn" "t exist".format(file=file))
     else:
-        result.extend(
-            display.print_reports_list(app, reports, files, title="Liste des fichiers")
-        )
+        result.extend(display.print_reports_list(app, reports, files, title="Liste des fichiers"))
 
     if csv:
         app.save_data_to_csv(csv, [data])
@@ -110,9 +104,7 @@ def on_errors(app, file, csv, search, workspace, name, id, limit, export):
     file = [int(i.strip()) for i in ",".join(file).split(",")][0]
     report = app.config["reports"][file]
 
-    data = app.get_errors(
-        report=report, filter=search, workspace=workspace, name=name, id=id
-    )
+    data = app.get_errors(report=report, filter=search, workspace=workspace, name=name, id=id)
     result.extend(
         display.print_errors(
             app,
@@ -165,9 +157,7 @@ def on_layers(app, file, csv, search, workspace, name, id, limit, export):
         result.extend(display.print_layer_errors(app, report, data_errors or []))
 
     else:
-        data = app.get_layers(
-            report=report, filter=search, workspace=workspace, name=name
-        )
+        data = app.get_layers(report=report, filter=search, workspace=workspace, name=name)
         result.extend(
             display.print_layers(
                 app, report, data, limit, search=search, workspace=workspace, name=name
@@ -248,11 +238,7 @@ def on_dashboard(app, file, workspace, destination, template):
     file = [int(i.strip()) for i in ",".join(file).split(",")][0]
     report = app.config["reports"][file]
 
-    if (
-        workspace
-        and workspace is not None
-        and report["type"].lower() not in ["wms", "wfs"]
-    ):
+    if workspace and workspace is not None and report["type"].lower() not in ["wms", "wfs"]:
         app.echo()
         app.echo('ERROR: "--workspace" option works only on WMS and WFS report type.')
         app.echo()

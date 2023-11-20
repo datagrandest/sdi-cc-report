@@ -1,4 +1,6 @@
-import sys, os
+import os
+import sys
+
 import bottle
 
 from sdi_cc_report.sdi_cc_report_web import run

@@ -1,13 +1,14 @@
-import os
-import re
 import csv
 import datetime
+import os
+import re
 import time
+
 import requests
 
 from sdi_cc_report import config
-from sdi_cc_report.libs.yaml import Yaml
 from sdi_cc_report.libs.report import Report
+from sdi_cc_report.libs.yaml import Yaml
 
 
 # TODO: à mettre dans une librairie partagée (helpers)
@@ -47,9 +48,7 @@ class Application:
         self.add_logs(message="=" * 80)
         self.add_logs(message=self.translate["init_message"].format(app=self.app))
         self.add_logs(
-            message='Config file "{config_file}" loaded.'.format(
-                config_file=self.config_file
-            )
+            message='Config file "{config_file}" loaded.'.format(config_file=self.config_file)
         )
         self.add_logs(
             message='Locales file "{locales_file}" loaded (language "{lang}")'.format(
@@ -73,26 +72,18 @@ class Application:
                 os.path.join(self.root_dir, self.config["log"]["log_file"])
             )
             self.dashboard_templates_directory = os.path.abspath(
-                os.path.join(
-                    self.root_dir, self.config["dashboard"]["templates_directory"]
-                )
+                os.path.join(self.root_dir, self.config["dashboard"]["templates_directory"])
             )
             self.translate = Yaml(file=self.locales_file).data
 
         else:
-            print(
-                'ERROR: config file "{file}" cannot be loading.'.format(
-                    file=config_file
-                )
-            )
+            print('ERROR: config file "{file}" cannot be loading.'.format(file=config_file))
             self.on_exit_app()
 
     def set_logs(self, message="", level="INFO"):
         if self.log_file is None:
-            log_message = (
-                "{now} - {level}: Log file is not define in config.yaml".format(
-                    now=now, level="ERROR"
-                )
+            log_message = "{now} - {level}: Log file is not define in config.yaml".format(
+                now=now, level="ERROR"
             )
             self.logs.append(log_message)
             print(message)
@@ -103,9 +94,7 @@ class Application:
                 pass
 
         now = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
-        log_message = "{now} - {level}: {message}".format(
-            now=now, level=level, message=message
-        )
+        log_message = "{now} - {level}: {message}".format(now=now, level=level, message=message)
         self.logs.append(log_message)
 
         with open(self.log_file, "a") as log_file:
@@ -223,9 +212,7 @@ class Application:
             "nb_workspaces": r.nb_workspaces,
         }
 
-    def generate_dashboard(
-        self, report, destination=None, workspace=None, template=None
-    ):
+    def generate_dashboard(self, report, destination=None, workspace=None, template=None):
         if report is None:
             return ["ERROR: report not define"]
 
@@ -265,9 +252,7 @@ class Application:
         template_file = (
             template
             if template and template is not None
-            else os.path.join(
-                self.dashboard_templates_directory, template_file + ".html"
-            )
+            else os.path.join(self.dashboard_templates_directory, template_file + ".html")
         )
 
         # Create destination path if necessary
@@ -302,34 +287,26 @@ class Application:
         csv_file = os.path.join(destination, csv_files["csv_report"])
         data_reports = self.get_report_summary(report=report)
         self.save_data_to_csv(csv_file, [data_reports])
-        result.append(
-            "INFO: {csv_report} file saved".format(csv_report=csv_files["csv_report"])
-        )
+        result.append("INFO: {csv_report} file saved".format(csv_report=csv_files["csv_report"]))
 
         # Generate errors CSV
         csv_file = os.path.join(destination, csv_files["csv_errors"])
         data_errors = self.get_errors(report=report, workspace=workspace)
         self.save_data_to_csv(csv_file, data_errors["errors"])
-        result.append(
-            "INFO: {csv_errors} file saved".format(csv_errors=csv_files["csv_errors"])
-        )
+        result.append("INFO: {csv_errors} file saved".format(csv_errors=csv_files["csv_errors"]))
 
         # Generate layers CSV
         csv_file = os.path.join(destination, csv_files["csv_layers"])
         data_layers = self.get_layers(report=report, workspace=workspace)
         self.save_data_to_csv(csv_file, data_layers["layers"])
-        result.append(
-            "INFO: {csv_layers} file saved".format(csv_layers=csv_files["csv_layers"])
-        )
+        result.append("INFO: {csv_layers} file saved".format(csv_layers=csv_files["csv_layers"]))
 
         # Generate workspace CSV
         if report["type"].lower() in ["wms", "wfs"]:
             csv_file = os.path.join(destination, csv_files["csv_ws"])
             data_workspaces = self.get_workspaces(report=report, filter=workspace)
             self.save_data_to_csv(csv_file, data_workspaces["workspaces"])
-            result.append(
-                "INFO: {csv_ws} file saved".format(csv_ws=csv_files["csv_ws"])
-            )
+            result.append("INFO: {csv_ws} file saved".format(csv_ws=csv_files["csv_ws"]))
 
         result.append("INFO: dashboard production complete")
 

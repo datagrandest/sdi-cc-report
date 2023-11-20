@@ -50,9 +50,7 @@ def print_reports_list(app, reports, files=None, title=None, echo=False):
     if nb_display_reports > 0:
         result.append(table)
     else:
-        result.append(
-            "Aucun fichier à afficher. Merci de vérifier les paramètres indiqués."
-        )
+        result.append("Aucun fichier à afficher. Merci de vérifier les paramètres indiqués.")
     result.append("")
 
     if echo:
@@ -65,9 +63,7 @@ def print_reports_list(app, reports, files=None, title=None, echo=False):
 def print_report_summary(app, report, data, title=None, echo=False):
     # Get table data
     data = [[key, value] for key, value in data.items()]
-    table = tabulate(
-        data, tablefmt="pretty", colalign=("left", "right"), maxcolwidths=[30, 8]
-    )
+    table = tabulate(data, tablefmt="pretty", colalign=("left", "right"), maxcolwidths=[30, 8])
 
     # Display data table
     result = []
